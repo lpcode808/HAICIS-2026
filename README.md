@@ -44,7 +44,7 @@ Shortcuts pause while you type in a note or search field. Tab headings also supp
 
 **The brochure is the schedule source.** Its final session ends at **4:00 PM**; the organizer’s website lists the overall event through **4:30 PM**. The guide makes that difference visible. For event updates, check the [official summit website](https://www.truehawaii.org/ai-summit/).
 
-**This is an independent attendee guide.** It’s adapted from the [KSEDTECH-26 conference app](https://github.com/lpcode808/KSEDTECH-26), with the old event content replaced. It isn’t an official registration site.
+**This is an independent attendee guide.** It’s adapted from the [KSEDTECH-26 conference app](https://github.com/lpcode808/KSEDTECH-26), with the old event content replaced. It isn’t an official registration site. Made with resources from the [TechZone](https://www.hawaiischoolforgirls.org/academics/techzone) at [Hawaiʻi School for Girls at La Pietra](https://www.hawaiischoolforgirls.org/).
 
 ## What’s inside
 
