@@ -2358,6 +2358,23 @@
       border: 2px solid var(--teal-dim);
     }
 
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    .related-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: -0.2rem 0 0.85rem; }
+    .related-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      min-height: 36px;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(7, 168, 168, 0.4);
+      color: var(--teal);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .related-link:hover { background: var(--teal-dim); }
+
     .speaker-bio {
       margin: 0 0 0.85rem;
       font-size: 0.82rem;
@@ -2922,7 +2939,13 @@
     "location": "Main Ballroom",
     "description": "What would it take for Hawaiʻi to shape its own AI future rather than simply adopt tools built elsewhere? This keynote looks ahead at the forces reshaping how organizations work, the choices that will separate places that lead from places that follow, and the scenarios Hawaiʻi should be preparing for now. Attendees will leave with a longer view of what AI self-reliance can mean for an island economy, and the decisions leaders can make today to move toward it.",
     "studentSummary": "",
-    "subItems": []
+    "subItems": [],
+    "links": [
+      {
+        "label": "Salesforce Futures",
+        "url": "https://www.salesforce.com/news/futures/"
+      }
+    ]
   },
   {
     "id": "morning-break",
@@ -3806,6 +3829,7 @@
             <div class="session-body-inner">
               ${metaParts.length ? `<div class="session-meta-row">${metaParts.join('')}</div>` : ''}
               ${s.description ? `<p class="session-description">${esc(s.description)}</p>` : ''}
+              ${relatedLinksHtml(s.links)}
               ${subItemsHtml}
               <div class="session-actions">
                 <button class="session-star-toggle ${isStarred ? 'is-starred' : ''}" type="button" data-session-star-id="${s.id}" aria-pressed="${isStarred}">
@@ -5074,6 +5098,12 @@
     "bio": [
       "Peter Schwartz is an internationally renowned futurist and business strategist, specializing in scenario planning and working with corporations, governments, and institutions to create alternative perspectives of the future and develop robust strategies for a changing and uncertain world. As Chief Futurist, he manages the organization’s ongoing strategic conversation. Peter leads the Salesforce Futures Team – a collaboration between strategic thinkers at Salesforce and its customers around provocative ideas on the future of business.",
       "Prior to joining Salesforce, Peter was co-founder and chairman of Global Business Network. He served as Head of Scenario Planning for Shell from 1982 to 87. He is the author of several works. His first book, The Art of the Long View, is considered a seminal publication on scenario planning. Peter has also served as a script consultant on the films “The Minority Report,” “Deep Impact,” “Sneakers,” and “War Games.” He received a B.S. in aeronautical engineering and astronautics from Rensselaer Polytechnic Institute in New York."
+    ],
+    "links": [
+      {
+        "label": "Salesforce Futures",
+        "url": "https://www.salesforce.com/news/futures/"
+      }
     ]
   },
   {
@@ -5385,6 +5415,12 @@
     .sort((a, b) => a.name.localeCompare(b.name));
   let speakersShowStarredFirst = false;
 
+  function relatedLinksHtml(links = []) {
+    const safe = links.filter(link => /^https:\/\//.test(link.url));
+    if (!safe.length) return '';
+    return `<div class="related-links">${safe.map(link => `<a class="related-link" href="${esc(link.url)}" target="_blank" rel="noopener noreferrer">${esc(link.label)} <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>`).join('')}</div>`;
+  }
+
   function initials(name) {
     return name.split(' ').map(p => p[0]).slice(0, 2).join('').toUpperCase();
   }
@@ -5566,6 +5602,7 @@
               ${sp.photo ? `<img class="speaker-photo" src="${esc(sp.photo)}" alt="Headshot of ${esc(sp.name)}" width="112" height="112" loading="lazy" decoding="async" onerror="this.remove()">` : ''}
               <div class="speaker-company">🏢 ${esc(sp.company)}</div>
               ${(sp.bio || []).length ? `<div class="speaker-bio">${sp.bio.map(p => `<p>${esc(p)}</p>`).join('')}</div>` : ''}
+              ${relatedLinksHtml(sp.links)}
               <p class="speaker-sessions-label">Scheduled appearances</p>
               <p class="speaker-gesture-hint">Swipe left on mobile to toggle a star quickly. On desktop, use the button below.</p>
               <div>${chips || '<p class="speaker-role">Featured in the brochure; no timed appearance listed.</p>'}</div>
