@@ -90,7 +90,7 @@ const cache = {
 };
 const worker = vm.createContext({ URL, Response, caches: {
   open: async () => cache,
-  keys: async () => ['other-conference-v1', 'haicis2026-guide-v2', 'haicis2026-guide-v3', 'haicis2026-guide-v4', 'haicis2026-guide-v5', 'haicis2026-guide-v6', 'haicis2026-guide-v7', 'haicis2026-guide-v8', 'haicis2026-guide-v9', 'haicis2026-guide-v10'],
+  keys: async () => ['other-conference-v1', 'haicis2026-guide-v2', 'haicis2026-guide-v3', 'haicis2026-guide-v4', 'haicis2026-guide-v5', 'haicis2026-guide-v6', 'haicis2026-guide-v7', 'haicis2026-guide-v8', 'haicis2026-guide-v9', 'haicis2026-guide-v10', 'haicis2026-guide-v11'],
   delete: async key => removed.push(key)
 }, fetch: async request => {
   if (offline) throw new Error('Offline');
@@ -105,7 +105,7 @@ let task;
 events.install({waitUntil: promise => {task = promise;}}); await task;
 assert(precached.includes('./search.js'));
 events.activate({waitUntil: promise => {task = promise;}}); await task;
-assert.deepEqual(removed, ['haicis2026-guide-v2', 'haicis2026-guide-v3', 'haicis2026-guide-v4', 'haicis2026-guide-v5', 'haicis2026-guide-v6', 'haicis2026-guide-v7', 'haicis2026-guide-v8', 'haicis2026-guide-v9']);
+assert.deepEqual(removed, ['haicis2026-guide-v2', 'haicis2026-guide-v3', 'haicis2026-guide-v4', 'haicis2026-guide-v5', 'haicis2026-guide-v6', 'haicis2026-guide-v7', 'haicis2026-guide-v8', 'haicis2026-guide-v9', 'haicis2026-guide-v10']);
 let response;
 events.fetch({request:{url:'https://guide.test/HAICIS-2026/favicon.svg?v=2',method:'GET',mode:'navigate'},
   waitUntil:promise => {task=promise;},respondWith:promise => {response=promise;}});

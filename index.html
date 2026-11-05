@@ -2133,6 +2133,8 @@
       align-items: center;
       gap: 1rem;
       padding: 1.5rem 1.25rem;
+      overflow-y: auto;
+      min-height: 0;
     }
     .qr-frame {
       background: #fff;
@@ -2145,6 +2147,16 @@
       height: 200px;
       display: block;
     }
+    .qr-switch { display: flex; gap: 0.35rem; margin: 1rem 1.25rem 0; padding: 0.25rem; border-radius: 999px; background: rgba(255, 250, 242, 0.06); }
+    .qr-switch button { flex: 1; min-height: 40px; border: 0; border-radius: 999px; background: none; color: var(--text-muted); font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; }
+    .qr-switch button[aria-selected="true"] { background: var(--teal-dim); color: var(--teal); }
+    .qr-modal-body[hidden] { display: none; }
+    .wifi-details { display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 0.9rem; align-items: center; margin: 0; font-size: 0.88rem; }
+    .wifi-details dt { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+    .wifi-details dd { margin: 0; color: var(--text); font-weight: 700; overflow-wrap: anywhere; }
+    .wifi-copy { min-height: 36px; padding: 0.3rem 0.8rem; border-radius: 999px; border: 1px solid rgba(7, 168, 168, 0.4); background: var(--teal-dim); color: var(--teal); font: inherit; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+    .qr-note { margin: 0; font-size: 0.75rem; line-height: 1.5; color: var(--text-muted); text-align: center; }
+    .qr-note strong { color: var(--text); }
     .qr-url {
       font-size: 0.75rem;
       color: var(--text-dim);
@@ -2596,7 +2608,7 @@
   <header class="app-header">
     <div class="header-inner">
       <div class="header-brand">
-        <button class="header-link header-qr" id="headerQrBtn" type="button" aria-haspopup="dialog" aria-controls="qrModal" aria-label="Share this guide with a QR code" title="Share this guide (QR code)">
+        <button class="header-link header-qr" id="headerQrBtn" type="button" aria-haspopup="dialog" aria-controls="qrModal" aria-label="Share this guide or the Wi-Fi with a QR code" title="Share the guide or Wi-Fi (QR codes)">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
             <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>
             <rect x="5" y="5" width="3" height="3" fill="currentColor" stroke="none"/><rect x="16" y="5" width="3" height="3" fill="currentColor" stroke="none"/><rect x="5" y="16" width="3" height="3" fill="currentColor" stroke="none"/>
@@ -2866,10 +2878,14 @@
   <div class="modal-overlay hidden" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
     <div class="modal-sheet">
       <div class="modal-top">
-        <span class="modal-top-title" id="qrModalTitle">Share This App</span>
+        <span class="modal-top-title" id="qrModalTitle">Share &amp; Wi-Fi</span>
         <button class="modal-close" id="closeQrModal" aria-label="Close">✕</button>
       </div>
-      <div class="qr-modal-body">
+      <div class="qr-switch" role="tablist" aria-label="Choose a QR code">
+        <button type="button" role="tab" id="qrTabGuide" aria-controls="qrPanelGuide" aria-selected="true">This guide</button>
+        <button type="button" role="tab" id="qrTabWifi" aria-controls="qrPanelWifi" aria-selected="false" tabindex="-1">Venue Wi-Fi</button>
+      </div>
+      <div class="qr-modal-body" id="qrPanelGuide" role="tabpanel" aria-labelledby="qrTabGuide">
         <p class="qr-hint">Point any camera at this code to open the app — no AirDrop needed.</p>
         <div class="qr-frame">
           <img
@@ -2881,6 +2897,18 @@
           >
         </div>
         <p class="qr-url">lpcode808.github.io/HAICIS-2026</p>
+      </div>
+      <div class="qr-modal-body" id="qrPanelWifi" role="tabpanel" aria-labelledby="qrTabWifi" hidden>
+        <p class="qr-hint">Have someone point their camera at this code to join the summit Wi-Fi.</p>
+        <div class="qr-frame">
+          <img src="wifi-qr.svg" alt="QR code to join the Hilton Honors Wi-Fi network" width="200" height="200" loading="lazy">
+        </div>
+        <dl class="wifi-details">
+          <dt>Network</dt><dd>Hilton Honors</dd>
+          <dt>Password</dt><dd id="wifiPassword">AISummit@2500</dd>
+        </dl>
+        <button type="button" class="wifi-copy" id="copyWifiPassword">Copy password</button>
+        <p class="qr-note">On your own phone, pick <strong>Hilton Honors</strong> in Wi-Fi settings and paste the password. If a Hilton sign-in page opens instead, enter it there.</p>
       </div>
     </div>
   </div>
@@ -6050,8 +6078,35 @@
   // ──────────────────────────────────────────────────────────
 
   ['openQrModal', 'headerQrBtn'].forEach(id => document.getElementById(id).addEventListener('click', () => {
+    showQrPanel('guide');
     openModal('qrModal');
   }));
+  function showQrPanel(which) {
+    const tabs = { guide: document.getElementById('qrTabGuide'), wifi: document.getElementById('qrTabWifi') };
+    Object.entries(tabs).forEach(([key, tab]) => {
+      const active = key === which;
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      tab.tabIndex = active ? 0 : -1;
+      document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
+    });
+  }
+  document.getElementById('qrTabGuide').addEventListener('click', () => showQrPanel('guide'));
+  document.getElementById('qrTabWifi').addEventListener('click', () => showQrPanel('wifi'));
+  document.querySelector('.qr-switch').addEventListener('keydown', e => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    e.preventDefault();
+    const next = document.getElementById('qrTabGuide').getAttribute('aria-selected') === 'true' ? 'wifi' : 'guide';
+    const target = e.key === 'Home' ? 'guide' : e.key === 'End' ? 'wifi' : next;
+    showQrPanel(target);
+    document.getElementById(target === 'wifi' ? 'qrTabWifi' : 'qrTabGuide').focus();
+  });
+  document.getElementById('copyWifiPassword').addEventListener('click', () => {
+    const text = document.getElementById('wifiPassword').textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+      .then(() => showToast('Wi-Fi password copied ✓'))
+      .catch(() => showToast('Couldn’t copy — the password is AISummit@2500', 4000));
+  });
+
   document.getElementById('closeQrModal').addEventListener('click', () => {
     closeModal('qrModal');
   });

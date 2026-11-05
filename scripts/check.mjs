@@ -43,5 +43,6 @@ for (const [, ref] of html.matchAll(/(?:src|href)="([^"#]+)"/g)) {
 const sw = fs.readFileSync('sw.js','utf8');
 assert(sw.includes("key.startsWith('haicis2026-guide-')"));
 assert(sw.includes("'./share-qr.svg'"));
+assert(sw.includes("'./wifi-qr.svg'") && fs.readFileSync('wifi-qr.svg', 'utf8').includes('<path'), 'Wi-Fi QR must be local and precached');
 assert(sw.includes("'./search.js'"));
 console.log('PASS: script syntax; 21 agenda entries; 29 speakers with bios and headshots; full session descriptions; parallel tracks; references; date/time; storage isolation; privacy and local assets.');
