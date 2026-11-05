@@ -2220,8 +2220,10 @@
     }
 
     .speaker-avatar {
-      width: 38px;
-      height: 38px;
+      position: relative;
+      overflow: hidden;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       background: var(--primary);
       display: flex;
@@ -2308,6 +2310,25 @@
       font-size: 0.76rem;
       font-weight: 600;
       color: var(--teal);
+    }
+
+    .speaker-avatar img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .speaker-photo {
+      display: block;
+      width: 112px;
+      height: 112px;
+      margin: 0.75rem 0 0.1rem;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--teal-dim);
     }
 
     .speaker-bio {
@@ -4929,6 +4950,7 @@
     "name": "Nicole Cacal",
     "role": "Executive Director",
     "company": "TRUE Initiative",
+    "photo": "headshots/nicole-cacal.jpg",
     "sessions": [
       "welcome",
       "closing"
@@ -4944,6 +4966,7 @@
     "name": "Kamanaʻopono Crabbe",
     "role": "Executive Lead, Rediscovering Hawaiʻi’s Soul",
     "company": "Hawaiʻi Executive Collaborative",
+    "photo": "headshots/kamana-opono-crabbe.jpg",
     "sessions": [
       "oli"
     ],
@@ -4956,6 +4979,7 @@
     "name": "James Kunane Tokioka",
     "role": "Director",
     "company": "State of Hawaiʻi Department of Business, Economic Development and Tourism",
+    "photo": "headshots/james-kunane-tokioka.jpg",
     "sessions": [
       "opening"
     ],
@@ -4969,6 +4993,7 @@
     "name": "Josh Green",
     "role": "Governor",
     "company": "State of Hawaiʻi",
+    "photo": "headshots/josh-green.jpg",
     "sessions": [
       "governor"
     ],
@@ -4980,6 +5005,7 @@
     "name": "Lynelle Marble",
     "role": "Executive Director",
     "company": "Hawaiʻi Executive Collaborative",
+    "photo": "headshots/lynelle-marble.jpg",
     "sessions": [
       "keynote"
     ],
@@ -4991,6 +5017,7 @@
     "name": "Peter Schwartz",
     "role": "Chief Futurist",
     "company": "Salesforce",
+    "photo": "headshots/peter-schwartz.jpg",
     "sessions": [
       "keynote"
     ],
@@ -5003,6 +5030,7 @@
     "name": "Deena White Tearney",
     "role": "Founder and Chief Executive Officer",
     "company": "Pacific Point",
+    "photo": "headshots/deena-white-tearney.jpg",
     "sessions": [
       "industries"
     ],
@@ -5014,6 +5042,7 @@
     "name": "Ed Sniffen",
     "role": "Director",
     "company": "Hawaiʻi Department of Transportation",
+    "photo": "headshots/ed-sniffen.jpg",
     "sessions": [
       "industries"
     ],
@@ -5025,6 +5054,7 @@
     "name": "Robert K.W.H. Nobriga",
     "role": "Chairman",
     "company": "Tradewind Capital",
+    "photo": "headshots/robert-k-w-h-nobriga.jpg",
     "sessions": [
       "industries"
     ],
@@ -5036,6 +5066,7 @@
     "name": "Alireza Ali",
     "role": "Co-Founder and Managing Partner",
     "company": "The Blue Dot AI",
+    "photo": "headshots/alireza-ali.jpg",
     "sessions": [
       "industries"
     ],
@@ -5050,6 +5081,7 @@
     ],
     "role": "Interim Executive Director",
     "company": "Transform Hawaiʻi Government",
+    "photo": "headshots/william-kumagai.jpg",
     "sessions": [
       "government"
     ],
@@ -5061,6 +5093,7 @@
     "name": "Christine Maii Sakuda",
     "role": "State Chief Information Officer",
     "company": "Office of Enterprise Technology Services",
+    "photo": "headshots/christine-maii-sakuda.jpg",
     "sessions": [
       "government"
     ],
@@ -5074,6 +5107,7 @@
     "name": "Vince Hoang",
     "role": "State Chief Information Security Officer",
     "company": "Office of Enterprise Technology Services",
+    "photo": "headshots/vince-hoang.jpg",
     "sessions": [
       "government"
     ],
@@ -5085,6 +5119,7 @@
     "name": "Rebecca Cai",
     "role": "State Chief Data Officer",
     "company": "Office of Enterprise Technology Services",
+    "photo": "headshots/rebecca-cai.jpg",
     "sessions": [
       "government"
     ],
@@ -5096,6 +5131,7 @@
     "name": "Dr. Adam Jansen",
     "role": "State Archivist",
     "company": "State of Hawaiʻi",
+    "photo": "headshots/dr-adam-jansen.jpg",
     "sessions": [
       "ground-rules"
     ],
@@ -5107,6 +5143,7 @@
     "name": "Jessica Young",
     "role": "Director, Science & Technology Policy, Office of the Chief Scientific Officer",
     "company": "Microsoft",
+    "photo": "headshots/jessica-young.jpg",
     "sessions": [
       "ground-rules"
     ],
@@ -5118,6 +5155,7 @@
     "name": "Ailin John",
     "role": "Senior Manager, Information Technology Enterprise Enablement Services",
     "company": "Hawaiʻi Medical Service Association (HMSA)",
+    "photo": "headshots/ailin-john.jpg",
     "sessions": [
       "local-companies"
     ],
@@ -5129,6 +5167,7 @@
     "name": "David Cheong",
     "role": "Chief Information Officer",
     "company": "ABC Stores",
+    "photo": "headshots/david-cheong.jpg",
     "sessions": [
       "local-companies"
     ],
@@ -5140,6 +5179,7 @@
     "name": "Pete Dooher",
     "role": "Senior Vice President, Digital",
     "company": "Servco Pacific",
+    "photo": "headshots/pete-dooher.jpg",
     "sessions": [
       "local-companies"
     ],
@@ -5155,6 +5195,7 @@
     "name": "Jason Higa",
     "role": "Chief Executive Officer",
     "company": "FCH Enterprises (parent entity of Zippy’s)",
+    "photo": "headshots/jason-higa.jpg",
     "sessions": [
       "local-companies"
     ],
@@ -5167,6 +5208,7 @@
     "name": "Nadia Hansen",
     "role": "Global Artificial Intelligence Go-To-Market Leader & Industry Advisor for Public Sector",
     "company": "Salesforce",
+    "photo": "headshots/nadia-hansen.jpg",
     "sessions": [
       "data-ready"
     ],
@@ -5178,6 +5220,7 @@
     "name": "Todd Nacapuy",
     "role": "Chief Information Officer and Partner",
     "company": "Accuity",
+    "photo": "headshots/todd-nacapuy.jpg",
     "sessions": [
       "agents"
     ],
@@ -5190,6 +5233,7 @@
     "name": "David Pickett",
     "role": "Chief Technology Officer",
     "company": "Purple Maiʻa Foundation",
+    "photo": "headshots/david-pickett.jpg",
     "sessions": [
       "open-models"
     ],
@@ -5201,6 +5245,7 @@
     "name": "Ethan Gaspar",
     "role": "Intern",
     "company": "Purple Maiʻa Foundation",
+    "photo": "headshots/ethan-gaspar.jpg",
     "sessions": [
       "open-models"
     ],
@@ -5212,6 +5257,7 @@
     "name": "Kelly J. Ueoka",
     "role": "President",
     "company": "Pacxa",
+    "photo": "headshots/kelly-j-ueoka.jpg",
     "sessions": [
       "workforce"
     ],
@@ -5226,6 +5272,7 @@
     "name": "Donavan Kealoha",
     "role": "Managing Director; Co-Founder",
     "company": "Startup Capital Ventures x SBI; Purple Maiʻa Foundation",
+    "photo": "headshots/donavan-kealoha.jpg",
     "sessions": [
       "capital"
     ],
@@ -5237,6 +5284,7 @@
     "name": "Dawn Lippert",
     "role": "Founder and Chief Executive Officer",
     "company": "Elemental Impact",
+    "photo": "headshots/dawn-lippert.jpg",
     "sessions": [
       "capital"
     ],
@@ -5248,6 +5296,7 @@
     "name": "Hannah Ishida",
     "role": "Network Engagement Lead (featured in brochure)",
     "company": "Hawaiʻi Executive Collaborative",
+    "photo": "headshots/hannah-ishida.jpg",
     "sessions": [],
     "bio": [
       "Hannah Ishida is the Network Engagement Lead for Rediscovering Hawai‘i’s Soul at Hawai‘i Executive Collaborative, where she brings together leaders across sectors to create lasting change for Hawai‘i. She helps shape network strategy and develops programs, partnerships, and learning experiences that advance systems leadership by building trusted relationships and translating shared values into collective action. She brings more than a decade of experience in IT transformation, organizational change management, and community relations."
@@ -5257,6 +5306,7 @@
     "name": "Kira Diionno",
     "role": "Director of Communications (featured in brochure)",
     "company": "Hawaiʻi Executive Collaborative",
+    "photo": "headshots/kira-diionno.jpg",
     "sessions": [],
     "bio": [
       "Kira Diionno is the Director of Communications at the Hawaiʻi Executive Collaborative, where she leads communications strategy, brand management, and storytelling. Her work advances HEC’s efforts to connect leaders across sectors, build shared responsibility, and mobilize collective action for a more resilient Hawaiʻi. She brings more than a decade of experience in communications, marketing, and event programming and production across diverse sectors."
@@ -5433,7 +5483,7 @@
       return `
         <div class="speaker-item ${isStarred ? 'is-starred' : ''}" id="${sid}">
           <button class="speaker-trigger" aria-expanded="false" data-spk="${sid}">
-            <div class="speaker-avatar" aria-hidden="true">${initials(sp.name)}</div>
+            <div class="speaker-avatar" aria-hidden="true">${initials(sp.name)}${sp.photo ? `<img src="${esc(sp.photo)}" alt="" width="44" height="44" decoding="async" onerror="this.remove()">` : ''}</div>
             <div class="speaker-info">
               <div class="speaker-name">
                 ${esc(sp.name)}
@@ -5445,6 +5495,7 @@
           </button>
           <div class="speaker-body" id="spkbody-${sid}">
             <div class="speaker-body-inner">
+              ${sp.photo ? `<img class="speaker-photo" src="${esc(sp.photo)}" alt="Headshot of ${esc(sp.name)}" width="112" height="112" loading="lazy" decoding="async" onerror="this.remove()">` : ''}
               <div class="speaker-company">🏢 ${esc(sp.company)}</div>
               ${(sp.bio || []).length ? `<div class="speaker-bio">${sp.bio.map(p => `<p>${esc(p)}</p>`).join('')}</div>` : ''}
               <p class="speaker-sessions-label">Scheduled appearances</p>
