@@ -16,7 +16,7 @@ The 5th annual **Hawaiʻi AI & Cloud Innovation Summit**. Open the link on your 
 - **Keep a shortlist.** Open a session and tap **Add to My Picks**. Star speakers you want to remember, too.
 - **Catch the useful bits.** Write a session note, a person note, or a quick note for that idea you don’t want to lose before lunch.
 - **Take your notes home.** Export a Markdown backup or a JSON (JavaScript Object Notation) file that you can import later.
-- **Share the guide.** The built-in QR (Quick Response) code opens this public page for someone else. It doesn’t share your notes.
+- **Share the guide.** Tap **Share** in the top-left corner to show a QR (Quick Response) code that opens this public page on someone else’s phone. It doesn’t share your notes.
 
 Visit once while you’re online; the guide’s schedule, speaker list, and share code are then cached for offline use. External websites still need an internet connection.
 

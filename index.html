@@ -100,6 +100,20 @@
       gap: 1rem;
     }
 
+    .header-brand { display: flex; align-items: center; gap: 0.7rem; min-width: 0; }
+    .header-titles { min-width: 0; }
+    .header-qr {
+      flex-direction: column;
+      gap: 0.1rem;
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      border: 1px solid rgba(7, 168, 168, 0.35);
+      cursor: pointer;
+    }
+    .header-qr-label { font-size: 0.6rem; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1; }
+
     .conference-name {
       display: block;
       font-family: var(--font-display);
@@ -2494,6 +2508,13 @@
     .note-toggle[aria-expanded="false"] + .note-body,
     .learn-callout.collapsed .learn-callout-body { visibility:hidden; }
     .session-trigger:focus-visible, .speaker-trigger:focus-visible, .note-card-chevron:focus-visible { outline:3px solid var(--teal); outline-offset:3px; }
+    .label-short { display:none; }
+    @media(max-width:400px) {
+      .label-long { display:none; } .label-short { display:inline; }
+      .header-brand { gap:.5rem; } .header-qr { width:46px; height:46px; }
+      .header-actions .header-link:not(.header-qr) { padding:0 .55rem; }
+      .conference-meta { letter-spacing:.02em; }
+    }
     @media(max-width:380px) { .event-subtitle { max-width:180px; } .header-inner { gap:.4rem; padding-left:.8rem; padding-right:.8rem; } }
   </style>
 </head>
@@ -2501,11 +2522,21 @@
 
   <header class="app-header">
     <div class="header-inner">
-      <div>
+      <div class="header-brand">
+        <button class="header-link header-qr" id="headerQrBtn" type="button" aria-haspopup="dialog" aria-controls="qrModal" aria-label="Share this guide with a QR code" title="Share this guide (QR code)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="5" y="5" width="3" height="3" fill="currentColor" stroke="none"/><rect x="16" y="5" width="3" height="3" fill="currentColor" stroke="none"/><rect x="5" y="16" width="3" height="3" fill="currentColor" stroke="none"/>
+            <path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 20h3"/>
+          </svg>
+          <span class="header-qr-label">Share</span>
+        </button>
+        <div class="header-titles">
         <span class="conference-name">HAICIS 2026</span><span class="event-subtitle">Hawaiʻi AI &amp; Cloud Innovation Summit</span>
         <span class="conference-meta">November 5 · Honolulu · HST</span>
+        </div>
       </div>
-      <div class="header-actions"><a href="https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="header-link" title="Open the public conference brochure PDF">Brochure ↗</a><button id="shortcutsBtn" class="header-link shortcuts-button" type="button" aria-haspopup="dialog" aria-controls="shortcutsModal" title="Keyboard shortcuts (?)">?</button></div>
+      <div class="header-actions"><a href="https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="header-link" title="Open the public conference brochure PDF"><span class="label-long">Brochure</span><span class="label-short">PDF</span> ↗</a><button id="shortcutsBtn" class="header-link shortcuts-button" type="button" aria-haspopup="dialog" aria-controls="shortcutsModal" title="Keyboard shortcuts (?)">?</button></div>
     </div>
     <nav class="tab-nav" role="tablist" aria-label="Conference guide">
       <button class="tab-btn active" role="tab" id="tab-schedule" aria-controls="scheduleTab" tabindex="0" aria-keyshortcuts="1" data-tab="schedule" aria-selected="true">Schedule</button>
@@ -5749,9 +5780,9 @@
   //  QR SHARE MODAL
   // ──────────────────────────────────────────────────────────
 
-  document.getElementById('openQrModal').addEventListener('click', () => {
+  ['openQrModal', 'headerQrBtn'].forEach(id => document.getElementById(id).addEventListener('click', () => {
     openModal('qrModal');
-  });
+  }));
   document.getElementById('closeQrModal').addEventListener('click', () => {
     closeModal('qrModal');
   });
