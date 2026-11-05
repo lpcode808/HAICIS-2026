@@ -41,6 +41,7 @@ It’s a small static site: **no dependencies and no build step**.
 - `index.html` contains the app, agenda, and speaker data.
 - `sw.js` handles offline caching. Bump its cache version whenever you change a cached asset.
 - `share-qr.svg` is a local share code, so loading it makes no request to a third-party QR service.
+- `favicon.svg` is an original cloud-and-microchip mark inspired by the brochure’s ocean blues and cyan circuit patterns, with a small island-like silhouette in the processor core.
 - `scripts/check.mjs` checks script syntax, agenda and speaker references, parallel tracks, dates, local assets, and privacy safeguards. Run it with `npm test`.
 
 Serve the folder with any static web server to preview changes. **GitHub Pages publishes from `main`, at the repository root.** The live page is [lpcode808.github.io/HAICIS-2026](https://lpcode808.github.io/HAICIS-2026/).

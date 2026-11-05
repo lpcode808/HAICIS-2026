@@ -1,7 +1,7 @@
 // Cache only this conference's public app shell. Notes remain in localStorage.
-const CACHE_NAME = 'haicis2026-guide-v1';
+const CACHE_NAME = 'haicis2026-guide-v2';
 const SCOPE = new URL('./', self.location.href).pathname;
-const PRECACHE_URLS = ['./', './index.html', './favicon.svg', './share-qr.svg'];
+const PRECACHE_URLS = ['./', './index.html', './favicon.svg?v=2', './share-qr.svg'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS)).then(() => self.skipWaiting()));
 });

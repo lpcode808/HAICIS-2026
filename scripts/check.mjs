@@ -30,7 +30,7 @@ assert(!/AIza[\w-]{25,}|gh[pousr]_[\w]{20,}|BEGIN .*PRIVATE KEY|[\w.+-]+@[\w.-]+
 const storageKeys = [...js.matchAll(/const \w+_KEY = '([^']+)'/g)].map(m => m[1]);
 assert(storageKeys.length >= 5 && storageKeys.every(k => k.startsWith('haicis2026_')));
 for (const [, ref] of html.matchAll(/(?:src|href)="([^"#]+)"/g)) {
-  if (!/^(https?:|data:)/.test(ref) && !ref.includes('${')) assert(fs.existsSync(ref), `Missing local asset: ${ref}`);
+  if (!/^(https?:|data:)/.test(ref) && !ref.includes('${')) assert(fs.existsSync(ref.split('?')[0]), `Missing local asset: ${ref}`);
 }
 const sw = fs.readFileSync('sw.js','utf8');
 assert(sw.includes("key.startsWith('haicis2026-guide-')"));

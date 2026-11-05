@@ -1,1 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><title>HAICIS 2026</title><rect width="64" height="64" rx="16" fill="#133a54"/><path d="M16 40h32M20 40V28a12 12 0 0 1 24 0v12M26 28h12M32 20v20" fill="none" stroke="#9de2ee" stroke-width="4" stroke-linecap="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">HAICIS 2026 · Cloud and circuit</title>
+  <desc id="desc">A white cloud meets a cyan microchip on ocean blue, inspired by the summit brochure’s cloud, processor, and circuit motifs.</desc>
+  <defs>
+    <linearGradient id="ocean" x1="0" y1="64" x2="64" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#155d95"/>
+      <stop offset="1" stop-color="#0b2945"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#ocean)"/>
+  <path d="M49 5v10h10M5 48h10v11" fill="none" stroke="#42b8c5" stroke-width="2" opacity=".42"/>
+  <path d="M20 43a12 12 0 0 1-1-24 15 15 0 0 1 29 5 10 10 0 0 1 0 20H20Z" fill="#f4fcff"/>
+  <path d="M31 28v-5m10 5v-5M31 51v6m10-6v6M24 35h-6m6 10h-6m30-10h7m-7 10h7" fill="none" stroke="#65deea" stroke-width="3" stroke-linecap="round"/>
+  <rect x="24" y="28" width="24" height="24" rx="5" fill="#0b2945" stroke="#65deea" stroke-width="3"/>
+  <path d="m29 43 5-8 4 5 4-3v8H29Z" fill="#65deea"/>
+</svg>
