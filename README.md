@@ -17,7 +17,7 @@ The 5th annual **Hawaiʻi AI & Cloud Innovation Summit**. Open the link on your 
 - **Catch the useful bits.** Write a session note, a person note, or a quick note for that idea you don’t want to lose before lunch.
 - **Take your notes home.** **Export → Save backup file** saves your notes *and* stars in a file that **Import** can restore on any phone or browser. The Notes tab shows when you last backed up and reminds you after a few unsaved notes. A readable Markdown copy is there too, but it can’t be imported.
 - **Share the guide.** Tap **Share** in the top-left corner to show a QR (Quick Response) code that opens this public page on someone else’s phone. It doesn’t share your notes.
-- **Get online.** The same Share button has a **Venue Wi-Fi** tab: a QR code a friend can scan to join **Hilton Honors**, plus the password with a Copy button for your own phone.
+- **Get online.** The same Share button has a **Venue Wi-Fi** tab. **Hilton Honors** is an open network with a Hilton sign-in page, so tap the password to copy it, then join (a friend can scan the QR code from your screen) and paste the password when the sign-in page opens.
 
 Visit once while you’re online; the guide’s schedule, speaker list, and share code are then cached for offline use. External websites still need an internet connection.
 

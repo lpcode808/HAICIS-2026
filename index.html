@@ -448,6 +448,10 @@
       color: var(--lime);
       margin-bottom: 0.55rem;
       font-family: var(--font-display);
+      flex-wrap: wrap;
+      max-width: 100%;
+      line-height: 1.35;
+      white-space: normal;
     }
 
     .learn-callout-title {
@@ -2151,10 +2155,18 @@
     .qr-switch button { flex: 1; min-height: 40px; border: 0; border-radius: 999px; background: none; color: var(--text-muted); font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; }
     .qr-switch button[aria-selected="true"] { background: var(--teal-dim); color: var(--teal); }
     .qr-modal-body[hidden] { display: none; }
-    .wifi-details { display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 0.9rem; align-items: center; margin: 0; font-size: 0.88rem; }
-    .wifi-details dt { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
-    .wifi-details dd { margin: 0; color: var(--text); font-weight: 700; overflow-wrap: anywhere; }
-    .wifi-copy { min-height: 36px; padding: 0.3rem 0.8rem; border-radius: 999px; border: 1px solid rgba(7, 168, 168, 0.4); background: var(--teal-dim); color: var(--teal); font: inherit; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+    .qr-hint strong { color: var(--text); }
+    .wifi-password {
+      display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+      width: 100%; max-width: 280px; padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm); border: 2px dashed rgba(7, 168, 168, 0.55);
+      background: var(--teal-dim); color: var(--text); font: inherit; cursor: pointer;
+    }
+    .wifi-password:hover, .wifi-password.copied { border-style: solid; }
+    .wifi-password-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal); }
+    .wifi-password-value { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 1.2rem; font-weight: 700; letter-spacing: 0.03em; overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; }
+    .wifi-steps { margin: 0; padding-left: 1.2rem; font-size: 0.8rem; line-height: 1.5; color: var(--text-muted); display: grid; gap: 0.3rem; max-width: 300px; }
+    .wifi-steps strong { color: var(--text); }
     .qr-note { margin: 0; font-size: 0.75rem; line-height: 1.5; color: var(--text-muted); text-align: center; }
     .qr-note strong { color: var(--text); }
     .qr-url {
@@ -2899,16 +2911,19 @@
         <p class="qr-url">lpcode808.github.io/HAICIS-2026</p>
       </div>
       <div class="qr-modal-body" id="qrPanelWifi" role="tabpanel" aria-labelledby="qrTabWifi" hidden>
-        <p class="qr-hint">Have someone point their camera at this code to join the summit Wi-Fi.</p>
+        <p class="qr-hint">Network <strong>Hilton Honors</strong> · the password goes on the Hilton sign-in page that opens after you join.</p>
+        <button type="button" class="wifi-password" id="copyWifiPassword" aria-describedby="wifiPasswordLabel">
+          <span class="wifi-password-label" id="wifiPasswordLabel">Password · tap to copy</span>
+          <span class="wifi-password-value" id="wifiPassword">AISummit@2500</span>
+        </button>
         <div class="qr-frame">
-          <img src="wifi-qr.svg" alt="QR code to join the Hilton Honors Wi-Fi network" width="200" height="200" loading="lazy">
+          <img src="wifi-qr.svg" alt="QR code that joins the Hilton Honors Wi-Fi network" width="200" height="200" loading="lazy">
         </div>
-        <dl class="wifi-details">
-          <dt>Network</dt><dd>Hilton Honors</dd>
-          <dt>Password</dt><dd id="wifiPassword">AISummit@2500</dd>
-        </dl>
-        <button type="button" class="wifi-copy" id="copyWifiPassword">Copy password</button>
-        <p class="qr-note">On your own phone, pick <strong>Hilton Honors</strong> in Wi-Fi settings and paste the password. If a Hilton sign-in page opens instead, enter it there.</p>
+        <ol class="wifi-steps">
+          <li><strong>Copy</strong> the password above.</li>
+          <li><strong>Join Hilton Honors:</strong> scan this code from a friend’s screen, or pick it in Wi-Fi settings.</li>
+          <li>When the Hilton page opens, <strong>paste</strong> the password. No page? Open any website to bring it up.</li>
+        </ol>
       </div>
     </div>
   </div>
@@ -6102,8 +6117,15 @@
   });
   document.getElementById('copyWifiPassword').addEventListener('click', () => {
     const text = document.getElementById('wifiPassword').textContent;
+    const block = document.getElementById('copyWifiPassword');
+    const label = document.getElementById('wifiPasswordLabel');
     (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
-      .then(() => showToast('Wi-Fi password copied ✓'))
+      .then(() => {
+        showToast('Password copied ✓ Now join Hilton Honors');
+        block.classList.add('copied');
+        label.textContent = 'Copied ✓ · paste it on the Hilton page';
+        setTimeout(() => { block.classList.remove('copied'); label.textContent = 'Password · tap to copy'; }, 4000);
+      })
       .catch(() => showToast('Couldn’t copy — the password is AISummit@2500', 4000));
   });
 
