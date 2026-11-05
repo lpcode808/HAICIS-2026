@@ -1219,6 +1219,19 @@
       transition: background 0.2s, color 0.2s;
     }
     .ext-link:hover { background: rgba(255, 247, 235, 0.1); color: var(--text); }
+    .linkedin-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.15rem;
+      height: 1.15rem;
+      border-radius: 3px;
+      background: #0a66c2;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      line-height: 1;
+    }
 
     /* ── NOTES TAB ── */
     .notes-header {
@@ -5515,6 +5528,9 @@
                 >
                   ↗ Learn more with Google AI mode
                 </a>
+                ${sp.linkedin ? `<a href="${esc(sp.linkedin)}" target="_blank" rel="noopener noreferrer" class="ext-link ext-link-linkedin" aria-label="${esc(sp.name)} on LinkedIn (opens in a new tab)">
+                  <span class="linkedin-badge" aria-hidden="true">in</span> View LinkedIn profile
+                </a>` : ''}
                 <button class="note-toggle ${hasNote ? 'has-note' : ''}" data-note-type="${NOTE_TYPES.SPEAKER}" data-note-id="${sp.id}" aria-expanded="false" aria-controls="${notePanelId}">
                   <span aria-hidden="true">🤝</span>
                   <span class="note-label">${noteLabel(NOTE_TYPES.SPEAKER, hasNote)}</span>
