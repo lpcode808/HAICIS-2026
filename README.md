@@ -48,11 +48,11 @@ Shortcuts pause while you type in a note or search field. Tab headings also supp
 
 ## What’s inside
 
-The guide includes **21 agenda entries**, **six breakout sessions across three tracks**, and **28 publicly listed speakers and contributors**. Speaker cards connect to their scheduled appearances; Hannah Ishida is listed in the brochure biographies without a timed appearance, which her card explains.
+The guide includes **21 agenda entries**, **six breakout sessions across three tracks**, and **29 publicly listed speakers and contributors**, each with their full brochure biography. Speaker cards connect to their scheduled appearances; Hannah Ishida and Kira Diionno appear in the brochure biographies without a timed appearance, which their cards explain.
 
-Content comes from the [public HAICIS 2026 Digital Brochure](https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing) (agenda pp. 2–3, speaker roster p. 4 and pp. 9–16, session descriptions pp. 5–8). The [organizer’s page](https://www.truehawaii.org/ai-summit/) and [Hawaiʻi Technology Development Corporation listing](https://www.htdc.org/event/hawaii-ai-cloud-innovation-summit/) confirm the venue and overall event window. Sources were checked November 5, 2026.
+Content comes from the [public HAICIS 2026 Digital Brochure](https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing) (agenda pp. 2–3, speaker roster p. 4, biographies pp. 9–16, session descriptions pp. 5–8). The [organizer’s page](https://www.truehawaii.org/ai-summit/) and [Hawaiʻi Technology Development Corporation listing](https://www.htdc.org/event/hawaii-ai-cloud-innovation-summit/) confirm the venue and overall event window. Sources were checked November 5, 2026.
 
-Session descriptions are concise paraphrases of the brochure. Name variants use the fuller brochure names. Peter Schwartz’s title follows the detailed keynote listing; Donavan Kealoha’s two brochure affiliations are retained.
+Session descriptions and speaker biographies are quoted from the brochure, with only line-wrap hyphenation and two doubled periods cleaned up. Name variants use the fuller brochure names. Peter Schwartz’s title follows the detailed keynote listing; Donavan Kealoha’s two brochure affiliations are retained.
 
 ## For the next person updating this
 
