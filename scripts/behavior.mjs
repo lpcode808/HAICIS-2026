@@ -48,6 +48,25 @@ assert.equal(context.normalizeNoteRecord('session:agents', {...note,entityId:'">
 assert.equal(context.normalizeNoteRecord('session:agents', {...note,text:''}), null);
 assert.equal(context.normalizeNoteRecord('agents', {id:'agents',text:'Legacy note',savedAt:1234}).key, 'session:agents');
 
+// Backup files carry notes and stars; older notes-only backups still import.
+context.BACKUP_APP_ID = 'haicis2026-guide';
+for (const name of ['parseBackup', 'buildBackupPayload']) {
+  vm.runInContext(js.match(new RegExp(`  function ${name}\\([^]*?\\n  }`))[0], context);
+}
+context.getNotes = () => ({ [note.key]: note });
+context.getStarredSessions = () => new Set(['agents', 'keynote']);
+context.getStarredSpeakers = () => new Set(['peter-schwartz']);
+const restored = context.parseBackup(JSON.parse(JSON.stringify(context.buildBackupPayload(0))));
+assert.deepEqual(Object.keys(restored.notes), ['session:agents']);
+assert.deepEqual([...restored.starredSessions], ['agents', 'keynote']);
+assert.deepEqual([...restored.starredSpeakers], ['peter-schwartz']);
+const legacy = context.parseBackup({ [note.key]: note });
+assert.equal(legacy.notes['session:agents'].text, 'Local automation');
+assert.equal(legacy.starredSessions, null);
+assert.equal(context.parseBackup({ app: 'haicis2026-guide', notes: {}, starredSessions: ['not-a-session'] }).starredSessions.length, 0);
+assert.equal(context.parseBackup({ 'session:agents': { text: '' } }), null);
+assert.equal(context.parseBackup('# HAICIS 2026 — My Notes'), null);
+
 context.getNotes = () => ({});
 context.getStarredSessionList = () => [schedule.find(s => s.id === 'agents')];
 assert(context.buildExportText().includes('MY PICKS'));
@@ -71,7 +90,7 @@ const cache = {
 };
 const worker = vm.createContext({ URL, Response, caches: {
   open: async () => cache,
-  keys: async () => ['other-conference-v1', 'haicis2026-guide-v2', 'haicis2026-guide-v3', 'haicis2026-guide-v4', 'haicis2026-guide-v5', 'haicis2026-guide-v6', 'haicis2026-guide-v7', 'haicis2026-guide-v8'],
+  keys: async () => ['other-conference-v1', 'haicis2026-guide-v2', 'haicis2026-guide-v3', 'haicis2026-guide-v4', 'haicis2026-guide-v5', 'haicis2026-guide-v6', 'haicis2026-guide-v7', 'haicis2026-guide-v8', 'haicis2026-guide-v9'],
   delete: async key => removed.push(key)
 }, fetch: async request => {
   if (offline) throw new Error('Offline');
@@ -86,7 +105,7 @@ let task;
 events.install({waitUntil: promise => {task = promise;}}); await task;
 assert(precached.includes('./search.js'));
 events.activate({waitUntil: promise => {task = promise;}}); await task;
-assert.deepEqual(removed, ['haicis2026-guide-v2', 'haicis2026-guide-v3', 'haicis2026-guide-v4', 'haicis2026-guide-v5', 'haicis2026-guide-v6', 'haicis2026-guide-v7']);
+assert.deepEqual(removed, ['haicis2026-guide-v2', 'haicis2026-guide-v3', 'haicis2026-guide-v4', 'haicis2026-guide-v5', 'haicis2026-guide-v6', 'haicis2026-guide-v7', 'haicis2026-guide-v8']);
 let response;
 events.fetch({request:{url:'https://guide.test/HAICIS-2026/favicon.svg?v=2',method:'GET',mode:'navigate'},
   waitUntil:promise => {task=promise;},respondWith:promise => {response=promise;}});

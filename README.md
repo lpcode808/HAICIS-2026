@@ -15,7 +15,7 @@ The 5th annual **Hawaiʻi AI & Cloud Innovation Summit**. Open the link on your 
 - **Pick your afternoon.** There are three parallel tracks: **AI Playbooks**, **Practitioner Foundations**, and **People-Powered AI**. Choose one session at 1:15 PM and another at 2:05 PM.
 - **Keep a shortlist.** Open a session and tap **Add to My Picks**. Star speakers you want to remember, too.
 - **Catch the useful bits.** Write a session note, a person note, or a quick note for that idea you don’t want to lose before lunch.
-- **Take your notes home.** Export a Markdown backup or a JSON (JavaScript Object Notation) file that you can import later.
+- **Take your notes home.** **Export → Save backup file** saves your notes *and* stars in a file that **Import** can restore on any phone or browser. The Notes tab shows when you last backed up and reminds you after a few unsaved notes. A readable Markdown copy is there too, but it can’t be imported.
 - **Share the guide.** Tap **Share** in the top-left corner to show a QR (Quick Response) code that opens this public page on someone else’s phone. It doesn’t share your notes.
 
 Visit once while you’re online; the guide’s schedule, speaker list, and share code are then cached for offline use. External websites still need an internet connection.
@@ -40,7 +40,7 @@ Shortcuts pause while you type in a note or search field. Tab headings also supp
 
 ## A few things worth knowing
 
-**Your notes stay in your browser.** This app has no account system, analytics, or note-upload service. Notes and stars are saved on the device and browser where you create them. They don’t follow you to another phone, and private browsing or clearing browser data can erase them. Export a backup before you leave. On a shared device, someone using the same browser profile may be able to read your notes.
+**Your notes stay in your browser.** This app has no account system, analytics, or note-upload service. Notes and stars are saved on the device and browser where you create them, and every note editor says so. They don’t follow you to another phone, and they can disappear if you clear browser data, use a private window, open the link inside another app (Instagram, LinkedIn…), or don’t visit for about a week on iPhone. Save a backup file before you leave. If a browser blocks storage entirely, the guide shows a warning instead of silently losing notes. On a shared device, someone using the same browser profile may be able to read your notes.
 
 **The brochure is the schedule source.** Its final session ends at **4:00 PM**; the organizer’s website lists the overall event through **4:30 PM**. The guide makes that difference visible. For event updates, check the [official summit website](https://www.truehawaii.org/ai-summit/).
 

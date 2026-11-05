@@ -29,7 +29,7 @@
       --lime-dim: rgba(255, 209, 102, 0.16);
       --text: #fffaf2;
       --text-muted: rgba(255, 250, 242, 0.62);
-      --text-dim: rgba(255, 250, 242, 0.36);
+      --text-dim: rgba(255, 250, 242, 0.55);
       --border: rgba(255, 250, 242, 0.1);
       --border-active: rgba(124, 201, 221, 0.38);
       --radius: 12px;
@@ -1155,8 +1155,58 @@
       margin-top: 0.45rem;
       font-size: 0.72rem;
       line-height: 1.5;
-      color: var(--text-dim);
+      color: var(--text-muted);
     }
+
+    .storage-banner {
+      margin: 0.75rem 1rem 0;
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 140, 120, 0.14);
+      border: 1px solid rgba(255, 140, 120, 0.5);
+      color: var(--text);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .backup-status {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem 0.6rem;
+      margin: 0 0 0.85rem;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      color: var(--text-muted);
+    }
+    .backup-status.is-stale { color: var(--lime); }
+    .backup-status-modal { margin-bottom: 0.6rem; }
+    .backup-status-modal:empty { display: none; }
+    .backup-status-btn {
+      font: inherit;
+      font-weight: 700;
+      color: var(--teal);
+      background: var(--teal-dim);
+      border: 1px solid rgba(7, 168, 168, 0.4);
+      border-radius: 999px;
+      padding: 0.3rem 0.75rem;
+      min-height: 32px;
+      cursor: pointer;
+    }
+
+    .btn-sub { display: block; font-size: 0.68rem; font-weight: 500; opacity: 0.8; margin-top: 0.15rem; }
+    .download-btn-secondary { background: rgba(124, 201, 221, 0.1) !important; color: var(--teal) !important; border: 1px solid var(--border-active) !important; }
+
+    .import-mode { border: 0; padding: 0; margin: 0 0 1rem; display: grid; gap: 0.55rem; }
+    .import-mode label { display: flex; gap: 0.55rem; align-items: flex-start; font-size: 0.82rem; line-height: 1.4; color: var(--text); cursor: pointer; }
+    .import-mode input { accent-color: var(--teal); width: 18px; height: 18px; margin: 0.05rem 0 0; flex-shrink: 0; }
+    .import-paste { margin-bottom: 0.5rem; font-size: 0.8rem; color: var(--text-muted); }
+    .import-paste summary { cursor: pointer; min-height: 32px; display: flex; align-items: center; }
+
+    .help-privacy { margin-bottom: 1.1rem; padding: 0.8rem 0.9rem; border-radius: var(--radius-sm); background: var(--teal-dim); font-size: 0.84rem; line-height: 1.55; }
+    .help-privacy h3, .help-shortcuts-title { font-family: var(--font-display); font-size: 0.9rem; margin: 0 0 0.4rem; color: var(--text); }
+    .help-privacy p + p { margin-top: 0.4rem; }
+    .help-shortcuts-title { margin-bottom: 0.7rem; }
 
     .note-textarea {
       width: 100%;
@@ -2011,6 +2061,7 @@
     .danger-confirm-btn:hover:not(:disabled) { opacity: 0.9; }
 
     /* ── TOAST ── */
+    .toast.is-error { background: #ffb4a6; }
     .toast {
       position: fixed;
       bottom: 5rem;
@@ -2027,7 +2078,10 @@
       transition: opacity 0.22s, transform 0.22s;
       pointer-events: none;
       z-index: 300;
-      white-space: nowrap;
+      width: max-content;
+      max-width: calc(100vw - 2rem);
+      text-align: center;
+      line-height: 1.35;
       letter-spacing: 0.02em;
     }
 
@@ -2553,7 +2607,7 @@
         <span class="conference-meta">November 5 · Honolulu · HST</span>
         </div>
       </div>
-      <div class="header-actions"><a href="https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="header-link" title="Open the public conference brochure PDF"><span class="label-long">Brochure</span><span class="label-short">PDF</span> ↗</a><button id="shortcutsBtn" class="header-link shortcuts-button" type="button" aria-haspopup="dialog" aria-controls="shortcutsModal" title="Keyboard shortcuts (?)">?</button></div>
+      <div class="header-actions"><a href="https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="header-link" title="Open the public conference brochure PDF"><span class="label-long">Brochure</span><span class="label-short">PDF</span> ↗</a><button id="shortcutsBtn" class="header-link shortcuts-button" type="button" aria-haspopup="dialog" aria-controls="shortcutsModal" title="Help and keyboard shortcuts (?)" aria-label="Help and keyboard shortcuts">?</button></div>
     </div>
     <nav class="tab-nav" role="tablist" aria-label="Conference guide">
       <button class="tab-btn active" role="tab" id="tab-schedule" aria-controls="scheduleTab" tabindex="0" aria-keyshortcuts="1" data-tab="schedule" aria-selected="true">Schedule</button>
@@ -2565,6 +2619,9 @@
   </header>
 
   <main>
+    <div class="storage-banner" id="storageBanner" role="alert" hidden>
+      <strong>This browser isn’t saving notes.</strong> Private browsing or an in-app browser (Instagram, LinkedIn, Slack…) may be blocking storage. Open this page in Safari or Chrome to keep notes and stars.
+    </div>
     <section id="scheduleTab" class="tab-content active" role="tabpanel" aria-labelledby="tab-schedule">
       <div class="date-header">
         <span class="date-label">November 5, 2026</span>
@@ -2654,14 +2711,14 @@
         <div class="notes-storage-tip-body">
           <p class="notes-storage-tip-heading">Your notes live only in this browser</p>
           <ul class="notes-storage-tip-list">
-            <li>Notes are saved in this browser and are not sent to an organizer or server.</li>
-            <li>Switching browsers or devices starts a separate notebook.</li>
-            <li>Private or incognito windows may erase notes when the window closes.</li>
-            <li>Use Export before leaving if you want a backup outside this browser.</li>
+            <li><strong>Private:</strong> notes and stars stay on this device. They are never sent to the organizers or any server.</li>
+            <li><strong>Can disappear</strong> if you clear browser data, use a private window, opened this inside another app (Instagram, LinkedIn…), or don’t visit for about a week on iPhone. Another phone or browser starts empty.</li>
+            <li><strong>Keep a copy:</strong> tap <strong>Export ↓</strong> → <strong>Save backup file</strong>. Restore it any time with <strong>Import ↑</strong>.</li>
           </ul>
         </div>
         <button class="notes-storage-tip-dismiss" id="dismissNotesStorageTip" type="button">Got it</button>
       </div>
+      <p class="backup-status" id="backupStatus" hidden></p>
       <div class="notes-test-tools" id="notesTestTools" hidden>
         <span class="notes-test-title">Test mode</span>
         <p class="notes-test-copy">Desktop export reminder testing is enabled for this session. Use the reset button below to bring back the reminder after clicking <strong>Don’t remind me again</strong>.</p>
@@ -2691,19 +2748,20 @@
       </div>
       <div class="modal-body">
         <div class="export-download-prompt" id="desktopDownloadPrompt" hidden>
-          <span class="export-download-title">Save a local Markdown backup</span>
-          <p class="export-download-copy">You’re on desktop, so downloading a <code>.md</code> file is the safest way to keep these notes outside this browser before you close the tab.</p>
+          <span class="export-download-title">Save a backup file before you go</span>
+          <p class="export-download-copy">A backup file keeps your notes and stars outside this browser, and <strong>Import</strong> can restore it later on any device.</p>
           <div class="notes-test-actions">
             <button class="prompt-dismiss-btn" id="dismissDownloadPromptBtn" type="button">Don’t remind me again</button>
           </div>
         </div>
-        <p class="modal-hint" id="exportHint">On iPhone, tap <strong>Send to Notes…</strong> to open the share sheet, then choose <strong>Notes</strong> or <strong>New Quick Note</strong>. If you prefer, copy and paste manually.</p>
+        <p class="backup-status backup-status-modal" id="exportBackupStatus"></p>
+        <p class="modal-hint" id="exportHint"></p>
         <textarea class="export-textarea" id="exportTextarea" readonly aria-label="Your notes formatted for export"></textarea>
       </div>
       <div class="modal-footer">
-        <button class="download-btn" id="downloadMarkdownBtn" type="button" hidden>Download .md Backup</button>
-        <button class="download-btn" id="downloadJsonBtn" type="button" style="background: rgba(124, 201, 221, 0.1); color: var(--teal); border: 1px solid var(--border-active);" hidden>Download JSON (JavaScript Object Notation) Backup</button>
-        <button class="share-btn" id="shareBtn" type="button">Send to Notes…</button>
+        <button class="download-btn" id="downloadJsonBtn" type="button" hidden>Save backup file<span class="btn-sub">Notes + stars · can be restored with Import</span></button>
+        <button class="download-btn download-btn-secondary" id="downloadMarkdownBtn" type="button" hidden>Save readable copy (.md)<span class="btn-sub">For reading only · can’t be imported</span></button>
+        <button class="share-btn" id="shareBtn" type="button">Share to another app…</button>
         <button class="copy-btn" id="copyBtn">Copy to Clipboard</button>
       </div>
     </div>
@@ -2717,30 +2775,28 @@
         <button class="modal-close" id="closeImportModal" aria-label="Close">✕</button>
       </div>
       <div class="modal-body" style="padding: 1rem 1.25rem;">
-        <p class="modal-hint" style="margin-bottom: 0.85rem;">Restore your notes by selecting a JSON backup file or pasting the raw JSON text below.</p>
-        
+        <p class="modal-hint" style="margin-bottom: 0.85rem;">Restore from a backup file you saved with <strong>Export → Save backup file</strong>. Readable copies (.md) can’t be imported.</p>
+
+        <fieldset class="import-mode">
+          <legend class="sr-only">What to do with your current notes</legend>
+          <label><input type="radio" name="importMode" value="merge" checked> <span><strong>Add to my current notes</strong> (keeps the newer version of each note)</span></label>
+          <label><input type="radio" name="importMode" value="replace"> <span><strong>Replace my current notes</strong> with the backup</span></label>
+        </fieldset>
+
         <div style="margin-bottom: 1rem;">
-          <label class="confirm-label" for="importFileInput" style="font-weight:700; font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.03em;">Select JSON (JavaScript Object Notation) Backup File</label>
+          <label class="confirm-label" for="importFileInput" style="font-weight:700; font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.03em;">Choose backup file (.json)</label>
           <input type="file" id="importFileInput" accept=".json" style="width: 100%; font: inherit; font-size:0.8rem; color: var(--text-muted); background: var(--surface-input); border: 1px solid var(--border); padding: 0.5rem; border-radius: var(--radius-sm); margin-top: 0.35rem; cursor:pointer;">
         </div>
 
-        <div style="margin-bottom: 1rem;">
-          <label class="confirm-label" for="importTextarea" style="font-weight:700; font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.03em;">Or Paste Backup JSON String</label>
-          <textarea class="export-textarea" id="importTextarea" placeholder='{"haicis2026_notes_..."}' aria-label="Paste backup JSON string here" style="height: 110px; font-family: monospace; font-size: 0.8rem; margin-top: 0.35rem; width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-input); color: var(--text); padding: 0.5rem; resize: none; outline: none; margin-bottom: 0;"></textarea>
-        </div>
-
-        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.4rem; cursor: pointer;">
-          <input type="checkbox" id="importMergeCheckbox" checked style="accent-color: var(--teal); width: 18px; height: 18px; cursor: pointer;">
-          <label for="importMergeCheckbox" class="confirm-label" style="margin: 0; cursor: pointer; font-size: 0.82rem; color: var(--text);">
-            <strong>Merge with existing notes</strong> (keeps newer edits)
-          </label>
-        </div>
-        <p class="confirm-note" style="margin: 0 0 0.5rem; font-size: 0.72rem; color: var(--text-dim); line-height:1.4;">If unchecked, your current notes will be completely overwritten by the backup.</p>
+        <details class="import-paste">
+          <summary>Or paste backup text instead</summary>
+          <textarea class="export-textarea" id="importTextarea" aria-label="Paste the text of a backup file" style="height: 110px; font-family: monospace; font-size: 0.8rem; margin-top: 0.35rem; width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-input); color: var(--text); padding: 0.5rem; resize: none; outline: none; margin-bottom: 0;"></textarea>
+        </details>
         
         <p class="confirm-status" id="importStatus" style="font-size: 0.76rem; margin-top: 0.85rem; min-height: 18px; line-height: 1.4;"></p>
       </div>
       <div class="modal-footer">
-        <button class="share-btn" id="confirmImportBtn" type="button" style="background: var(--teal); color: var(--bg); font-weight:700; width:100%;">Confirm Import</button>
+        <button class="share-btn" id="confirmImportBtn" type="button" style="background: var(--teal); color: var(--bg); font-weight:700; width:100%;">Restore backup</button>
       </div>
     </div>
   </div>
@@ -2829,8 +2885,14 @@
 
   <div class="modal-overlay hidden" id="shortcutsModal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle">
     <div class="modal-sheet">
-      <div class="modal-top"><h2 class="modal-top-title" id="shortcutsTitle">Get around quickly</h2><button class="modal-close" id="closeShortcutsBtn" type="button" aria-label="Close keyboard shortcuts">✕</button></div>
+      <div class="modal-top"><h2 class="modal-top-title" id="shortcutsTitle">Help &amp; shortcuts</h2><button class="modal-close" id="closeShortcutsBtn" type="button" aria-label="Close help">✕</button></div>
       <div class="modal-body" style="padding:1.25rem">
+        <section class="help-privacy" aria-labelledby="helpPrivacyTitle">
+          <h3 id="helpPrivacyTitle">Your notes</h3>
+          <p>Notes and stars are saved only in this browser on this device and are never uploaded. They can disappear if you clear browser data, use a private window, open this page inside another app, or don’t visit for about a week on iPhone.</p>
+          <p>To keep them, go to <strong>Notes → Export ↓ → Save backup file</strong>.</p>
+        </section>
+        <h3 class="help-shortcuts-title">Keyboard shortcuts</h3>
         <dl class="shortcut-list">
           <dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Schedule, speakers, notes</dd>
           <dt><kbd>/</kbd></dt><dd>Focus search in the current tab</dd>
@@ -3196,6 +3258,44 @@
   const STARRED_SESSIONS_KEY = 'haicis2026_starred_sessions';
   const EXPORT_DOWNLOAD_REMINDER_KEY = 'haicis2026_export_download_reminder_hidden';
   const NOTES_STORAGE_TIP_KEY = 'haicis2026_notes_storage_tip_dismissed';
+  const LAST_BACKUP_KEY = 'haicis2026_last_backup';
+  const BACKUP_APP_ID = 'haicis2026-guide';
+
+  // Storage can be blocked (some in-app browsers, strict privacy settings) or full.
+  // Every write goes through here so a failed save is never silent.
+  function safeGetItem(key) {
+    try { return localStorage.getItem(key); } catch { return null; }
+  }
+
+  function safeSetItem(key, value) {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch {
+      reportStorageFailure();
+      return false;
+    }
+  }
+
+  function safeRemoveItem(key) {
+    try { localStorage.removeItem(key); return true; } catch { reportStorageFailure(); return false; }
+  }
+
+  function storageWorks() {
+    try {
+      localStorage.setItem('haicis2026_probe', '1');
+      localStorage.removeItem('haicis2026_probe');
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function reportStorageFailure() {
+    const banner = document.getElementById('storageBanner');
+    if (banner) banner.hidden = false;
+    showToast('Couldn’t save — this browser is blocking storage. Copy your text before leaving.', 6000, true);
+  }
   const DELETE_ALL_CONFIRMATION = 'delete all';
   const CLEAR_STARS_CONFIRMATION = 'clear stars';
   const EXPORT_SHARE_TITLE = 'HAICIS 2026 Notes';
@@ -3299,7 +3399,7 @@
       });
 
       if (changed) {
-        localStorage.setItem(NOTES_KEY, JSON.stringify(normalized));
+        try { localStorage.setItem(NOTES_KEY, JSON.stringify(normalized)); } catch {}
       }
 
       return normalized;
@@ -3309,8 +3409,9 @@
   }
 
   function persistNotes(notes) {
-    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+    const ok = safeSetItem(NOTES_KEY, JSON.stringify(notes));
     updateNoteCount();
+    return ok;
   }
 
   function getStarredSpeakers() {
@@ -3329,14 +3430,15 @@
   }
 
   function persistStarredSpeakers(starredSet) {
-    localStorage.setItem(STARRED_SPEAKERS_KEY, JSON.stringify([...starredSet]));
+    const ok = safeSetItem(STARRED_SPEAKERS_KEY, JSON.stringify([...starredSet]));
+    updateBackupStatus();
+    return ok;
   }
 
   function clearAllSpeakerStars() {
     const starred = getStarredSpeakers();
     if (starred.size === 0) return false;
-    localStorage.removeItem(STARRED_SPEAKERS_KEY);
-    return true;
+    return safeRemoveItem(STARRED_SPEAKERS_KEY);
   }
 
   function toggleSpeakerStar(speakerId) {
@@ -3365,7 +3467,9 @@
   }
 
   function persistStarredSessions(starredSet) {
-    localStorage.setItem(STARRED_SESSIONS_KEY, JSON.stringify([...starredSet]));
+    const ok = safeSetItem(STARRED_SESSIONS_KEY, JSON.stringify([...starredSet]));
+    updateBackupStatus();
+    return ok;
   }
 
   function toggleSessionStar(sessionId) {
@@ -3404,7 +3508,7 @@
     if (!trimmed) {
       if (existing) {
         delete notes[key];
-        persistNotes(notes);
+        if (!persistNotes(notes)) return { status: 'failed', note: existing };
         return { status: 'deleted', note: null };
       }
       return { status: 'unchanged', note: null };
@@ -3425,7 +3529,7 @@
     };
 
     notes[key] = next;
-    persistNotes(notes);
+    if (!persistNotes(notes)) return { status: 'failed', note: null };
     return {
       status: existing ? 'updated' : 'created',
       note: next
@@ -3446,7 +3550,7 @@
 
   function clearAllNotes() {
     if (getNoteCount() === 0) return false;
-    localStorage.removeItem(NOTES_KEY);
+    if (!safeRemoveItem(NOTES_KEY)) return false;
     updateNoteCount();
     syncNoteEditorValues();
     syncNoteIndicators();
@@ -3466,6 +3570,64 @@
     const el = document.getElementById('noteCount');
     el.textContent = count > 0 ? count : '';
     updateNotesActionState();
+    updateBackupStatus();
+  }
+
+  // ── Backup bookkeeping: when was a restorable file last saved, and what changed since?
+  function getLastBackup() {
+    try {
+      const raw = JSON.parse(safeGetItem(LAST_BACKUP_KEY) || 'null');
+      return raw && Number.isFinite(raw.at) ? raw : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function notesChangedSince(timestamp) {
+    return Object.values(getNotes()).filter(note => (note.updatedAt || note.createdAt || 0) > timestamp).length;
+  }
+
+  function backupStatusInfo() {
+    const noteCount = getNoteCount();
+    const hasContent = noteCount > 0 || getStarredSessions().size > 0 || getStarredSpeakers().size > 0;
+    if (!hasContent) return null;
+    const last = getLastBackup();
+    if (!last) {
+      return { stale: true, pending: noteCount, text: noteCount
+        ? `Not backed up yet · ${noteCount} note${noteCount !== 1 ? 's' : ''} only on this device.`
+        : 'Your stars aren’t backed up yet.' };
+    }
+    const changed = notesChangedSince(last.at);
+    const when = formatNoteTimestamp(last.at);
+    return changed
+      ? { stale: true, pending: changed, text: `Last backup ${when} · ${changed} note${changed !== 1 ? 's' : ''} changed since.` }
+      : { stale: false, pending: 0, text: `Backed up ${when} ✓` };
+  }
+
+  function updateBackupStatus() {
+    const info = backupStatusInfo();
+    const line = document.getElementById('backupStatus');
+    const modalLine = document.getElementById('exportBackupStatus');
+    if (line) {
+      line.hidden = !info;
+      line.classList.toggle('is-stale', !!info?.stale);
+      line.innerHTML = info
+        ? `<span>${esc(info.text)}</span>${info.stale ? '<button type="button" class="backup-status-btn" data-open-export>Save backup</button>' : ''}`
+        : '';
+    }
+    if (modalLine) modalLine.textContent = info ? info.text : '';
+  }
+
+  // Nudge after the 3rd unsaved-to-file note, then every 5 more. Shown at most once per count.
+  let lastBackupNudge = 0;
+  function maybeNudgeBackup() {
+    const info = backupStatusInfo();
+    if (!info || !info.stale || info.pending < 3) return false;
+    if (info.pending !== 3 && (info.pending - 3) % 5 !== 0) return false;
+    if (info.pending === lastBackupNudge) return false;
+    lastBackupNudge = info.pending;
+    showToast(`Saved ✓ · ${info.pending} notes aren’t backed up yet. Notes → Export saves a copy.`, 5000, false, true);
+    return true;
   }
 
   function noteLabel(type, hasNote) {
@@ -3514,10 +3676,16 @@
     return created;
   }
 
+  function editorMetaMessage(note) {
+    return note
+      ? `${noteMetaMessage(note)} · never uploaded`
+      : 'Saved only on this device, never uploaded. Back up from Notes → Export.';
+  }
+
   function syncNoteMeta() {
     document.querySelectorAll('[data-note-meta-type]').forEach(el => {
       const note = getNote(el.dataset.noteMetaType, el.dataset.noteMetaId);
-      el.textContent = noteMetaMessage(note);
+      el.textContent = editorMetaMessage(note);
     });
   }
 
@@ -3860,7 +4028,7 @@
                       placeholder="What stood out? Questions? Connections to make..."
                       aria-label="Note for ${esc(s.title)}"
                     >${note ? esc(note.text) : ''}</textarea>
-                    <p class="note-meta" data-note-meta-type="${NOTE_TYPES.SESSION}" data-note-meta-id="${s.id}">${esc(noteMetaMessage(note))}</p>
+                    <p class="note-meta" data-note-meta-type="${NOTE_TYPES.SESSION}" data-note-meta-id="${s.id}">${esc(editorMetaMessage(note))}</p>
                     <button class="note-save-btn" data-note-type="${NOTE_TYPES.SESSION}" data-note-id="${s.id}">Save Note ✓</button>
                   </div>
                 </div>
@@ -3884,6 +4052,7 @@
     }
 
     const result = saveNote(noteType, textarea.dataset.noteId, textarea.value);
+    if (result.status === 'created') maybeNudgeBackup();
     syncNoteEditorValues();
     syncNoteIndicators();
     syncNoteMeta();
@@ -3899,6 +4068,8 @@
   }
 
   function noteToast(type, status) {
+    if (status === 'failed') return '';
+    if (status === 'unchanged') return 'Saved on this device ✓';
     if (status === 'deleted') return 'Note cleared';
     if (status === 'created' || status === 'updated') {
       if (type === NOTE_TYPES.SPEAKER) return 'Person note saved ✓';
@@ -4228,7 +4399,7 @@
               data-note-id="${esc(note.entityId)}"
               aria-label="Quick note"
             >${esc(note.text)}</textarea>
-            <p class="note-meta" data-note-meta-type="${NOTE_TYPES.GENERAL}" data-note-meta-id="${esc(note.entityId)}">${esc(noteMetaMessage(note))}</p>
+            <p class="note-meta" data-note-meta-type="${NOTE_TYPES.GENERAL}" data-note-meta-id="${esc(note.entityId)}">${esc(editorMetaMessage(note))}</p>
             <div class="note-card-actions">
               <button class="note-card-delete" data-note-key="${note.key}" aria-label="Delete quick note">✕ Delete</button>
               <button class="note-save-btn" data-note-type="${NOTE_TYPES.GENERAL}" data-note-id="${esc(note.entityId)}">Save ✓</button>
@@ -4256,9 +4427,10 @@
         return;
       }
       const newId = `quick-note-${Date.now()}`;
-      saveNote(NOTE_TYPES.GENERAL, newId, text);
+      const result = saveNote(NOTE_TYPES.GENERAL, newId, text);
+      if (result.status === 'failed') return;
       textarea.value = '';
-      showToast('Quick note added ✓');
+      if (!maybeNudgeBackup()) showToast('Quick note added ✓');
       renderNotesTab();
     });
 
@@ -4403,8 +4575,9 @@
     ];
 
     const picks = getStarredSessionList();
+    const starredPeople = SPEAKERS.filter(sp => getStarredSpeakers().has(sp.id));
 
-    if (noteList.length === 0 && picks.length === 0) {
+    if (noteList.length === 0 && picks.length === 0 && starredPeople.length === 0) {
       lines.push('No notes or starred sessions yet.');
       return lines.join('\n');
     }
@@ -4419,6 +4592,13 @@
         const strands = (s.strands && s.strands.length) ? ` · ${s.strands.join(', ')}` : '';
         lines.push(`- **${s.title}** — ${s.day || ''} · ${when}${where}${strands}`);
       });
+      lines.push('');
+      if (noteList.length || starredPeople.length) lines.push('---', '');
+    }
+
+    if (starredPeople.length) {
+      lines.push('## ★ Starred Speakers', '');
+      starredPeople.forEach(sp => lines.push(`- **${sp.name}** — ${sp.role} · ${sp.company}`));
       lines.push('');
       if (noteList.length) lines.push('---', '');
     }
@@ -4439,14 +4619,14 @@
     return lines.join('\n');
   }
 
-  function buildExportMarkdownFilename(date = new Date()) {
+  function buildExportMarkdownFilename(date = new Date(), label = 'notes', ext = 'md') {
     const pad = value => String(value).padStart(2, '0');
     const year = date.getFullYear();
     const month = pad(date.getMonth() + 1);
     const day = pad(date.getDate());
     const hour = pad(date.getHours());
     const minute = pad(date.getMinutes());
-    return `haicis2026-notes-${year}-${month}-${day}-${hour}${minute}.md`;
+    return `haicis2026-${label}-${year}-${month}-${day}-${hour}${minute}.${ext}`;
   }
 
   function isLikelyDesktopDevice() {
@@ -4458,7 +4638,7 @@
   }
 
   function shouldShowDesktopDownloadPrompt() {
-    return isLikelyDesktopDevice() && localStorage.getItem(EXPORT_DOWNLOAD_REMINDER_KEY) !== '1';
+    return isLikelyDesktopDevice() && safeGetItem(EXPORT_DOWNLOAD_REMINDER_KEY) !== '1';
   }
 
   function downloadExportMarkdown() {
@@ -4477,13 +4657,48 @@
     return filename;
   }
 
-  function downloadExportJson() {
-    if (getNoteCount() === 0) return null;
+  function buildBackupPayload(now = Date.now()) {
+    return {
+      app: BACKUP_APP_ID,
+      version: 2,
+      exportedAt: new Date(now).toISOString(),
+      notes: getNotes(),
+      starredSessions: [...getStarredSessions()],
+      starredSpeakers: [...getStarredSpeakers()]
+    };
+  }
 
-    const notes = getNotes();
-    const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json;charset=utf-8' });
+  // Accepts this version's backup file and the older notes-only format.
+  function parseBackup(raw) {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    const isV2 = raw.app === BACKUP_APP_ID && raw.notes && typeof raw.notes === 'object' && !Array.isArray(raw.notes);
+    const notesSource = isV2 ? raw.notes : raw;
+    const records = Object.entries(notesSource).map(([key, value]) => normalizeNoteRecord(key, value));
+    if (!records.every(Boolean)) return null;
+    const sessionIds = new Set(SCHEDULE.map(s => s.id));
+    const speakerIds = new Set(SPEAKERS.map(s => s.id));
+    const ids = (list, known) => Array.isArray(list) ? [...new Set(list.filter(id => typeof id === 'string' && known.has(id)))] : null;
+    return {
+      notes: Object.fromEntries(records.map(note => [note.key, note])),
+      starredSessions: isV2 ? ids(raw.starredSessions, sessionIds) : null,
+      starredSpeakers: isV2 ? ids(raw.starredSpeakers, speakerIds) : null
+    };
+  }
+
+  function describeBackup(backup) {
+    const notes = Object.keys(backup.notes).length;
+    const stars = (backup.starredSessions || []).length + (backup.starredSpeakers || []).length;
+    return `${notes} note${notes !== 1 ? 's' : ''}${stars ? ` and ${stars} star${stars !== 1 ? 's' : ''}` : ''}`;
+  }
+
+  function downloadExportJson() {
+    const now = Date.now();
+    const payload = buildBackupPayload(now);
+    if (!Object.keys(payload.notes).length && !payload.starredSessions.length && !payload.starredSpeakers.length) return null;
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
     const objectUrl = URL.createObjectURL(blob);
-    const filename = `haicis2026-notes-backup-${Date.now()}.json`;
+    const filename = buildExportMarkdownFilename(new Date(now), 'backup', 'json');
     const link = document.createElement('a');
     link.href = objectUrl;
     link.download = filename;
@@ -4491,6 +4706,9 @@
     link.click();
     link.remove();
     setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+    try { localStorage.setItem(LAST_BACKUP_KEY, JSON.stringify({ at: now })); } catch {}
+    lastBackupNudge = 0;
+    updateBackupStatus();
     return filename;
   }
 
@@ -4555,12 +4773,16 @@
     }
   });
 
-  function showToast(msg) {
+  let toastPinnedUntil = 0;
+  function showToast(msg, duration = 2200, isError = false, pin = isError) {
     const el = document.getElementById('toast');
+    if (!isError && Date.now() < toastPinnedUntil) return;
+    if (pin) toastPinnedUntil = Date.now() + duration;
     el.textContent = msg;
+    el.classList.toggle('is-error', isError);
     el.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+    toastTimer = setTimeout(() => el.classList.remove('show'), duration);
   }
 
   // ──────────────────────────────────────────────────────────
@@ -4626,26 +4848,24 @@
     const reminderPrompt = document.getElementById('desktopDownloadPrompt');
     const exportHint = document.getElementById('exportHint');
     const hasNotes = getNoteCount() > 0;
-    const hasContent = hasNotes || getStarredSessions().size > 0;
+    const hasContent = hasNotes || getStarredSessions().size > 0 || getStarredSpeakers().size > 0;
     const isDesktop = isLikelyDesktopDevice();
     const supportsShare = typeof navigator.share === 'function' && !isDesktop;
 
-    shareBtn.hidden = isDesktop;
-    shareBtn.disabled = !supportsShare || !hasContent;
-    shareBtn.textContent = supportsShare ? 'Send to Notes…' : 'Send to Notes unavailable here';
+    shareBtn.hidden = !supportsShare;
+    shareBtn.disabled = !hasContent;
 
     downloadBtn.hidden = false;
     downloadBtn.disabled = !hasContent;
 
     downloadJsonBtn.hidden = false;
-    downloadJsonBtn.disabled = !hasNotes;
+    downloadJsonBtn.disabled = !hasContent;
 
     reminderPrompt.hidden = !(isDesktop && hasNotes && shouldShowDesktopDownloadPrompt());
-    exportHint.innerHTML = isDesktop
-      ? 'On desktop, use <strong>Download .md Backup</strong> or <strong>Download JSON (JavaScript Object Notation) Backup</strong> to keep a local copy of these notes outside this browser. You can still copy and paste if you prefer.'
-      : supportsShare
-        ? 'On iPhone, tap <strong>Send to Notes…</strong> to open the share sheet, then choose <strong>Notes</strong> or <strong>New Quick Note</strong>. If you prefer, copy and paste manually.'
-        : 'Download a backup below, or use <strong>Copy to Clipboard</strong> and paste into your notes app.';
+    exportHint.innerHTML = supportsShare
+      ? '<strong>Save backup file</strong> keeps everything so you can restore it later. To read your notes in another app, use <strong>Share</strong> or <strong>Copy</strong>.'
+      : '<strong>Save backup file</strong> keeps everything so you can restore it later. To read your notes elsewhere, save a readable copy or use <strong>Copy</strong>.';
+    updateBackupStatus();
 
     updateDownloadReminderTestState();
   }
@@ -4736,7 +4956,8 @@
     document.getElementById('importTextarea').value = '';
     document.getElementById('importStatus').textContent = '';
     document.getElementById('importStatus').className = 'confirm-status';
-    document.getElementById('importMergeCheckbox').checked = true;
+    document.querySelector('input[name="importMode"][value="merge"]').checked = true;
+    uploadedJsonData = null;
   }
 
   function openImportModal() {
@@ -4768,16 +4989,18 @@
 
     const reader = new FileReader();
     reader.onload = function(evt) {
+      const status = document.getElementById('importStatus');
       try {
         uploadedJsonData = JSON.parse(evt.target.result);
-        const status = document.getElementById('importStatus');
-        const count = Object.keys(uploadedJsonData).length;
-        status.textContent = `Valid backup loaded: contains ${count} note${count !== 1 ? 's' : ''}. Tap Confirm Import to complete.`;
+        const backup = parseBackup(uploadedJsonData);
+        if (!backup) throw new Error('Not a backup');
+        status.textContent = `Backup found: ${describeBackup(backup)}. Tap Restore backup to finish.`;
         status.className = 'confirm-status ready';
       } catch (err) {
         uploadedJsonData = null;
-        const status = document.getElementById('importStatus');
-        status.textContent = 'Error: Invalid JSON file.';
+        status.textContent = /\.md$/i.test(file.name)
+          ? 'That’s a readable copy (.md), which can’t be restored. Choose the backup file (.json) instead.'
+          : 'That file isn’t a backup from this guide. Choose the .json file saved with Export → Save backup file.';
         status.className = 'confirm-status error';
       }
     };
@@ -4794,40 +5017,36 @@
         rawData = JSON.parse(pastedText);
       } catch (err) {
         const status = document.getElementById('importStatus');
-        status.textContent = 'Error: Pasted text is not valid JSON.';
+        status.textContent = 'That text isn’t a backup. Paste the full contents of a backup file.';
         status.className = 'confirm-status error';
         return;
       }
     }
 
-    if (!rawData || typeof rawData !== 'object' || Array.isArray(rawData)) {
-      const status = document.getElementById('importStatus');
-      status.textContent = 'Error: Please upload a valid JSON file or paste a JSON object.';
+    const status = document.getElementById('importStatus');
+    if (!rawData) {
+      status.textContent = 'Choose a backup file first (or paste its text).';
       status.className = 'confirm-status error';
       return;
     }
 
-    // Basic validation of notes structure
-    const keys = Object.keys(rawData);
-    if (keys.length === 0) {
-      const status = document.getElementById('importStatus');
-      status.textContent = 'Error: The imported file contains 0 notes.';
+    const backup = parseBackup(rawData);
+    if (!backup) {
+      status.textContent = 'That isn’t a backup from this guide. Use the .json file saved with Export → Save backup file.';
       status.className = 'confirm-status error';
       return;
     }
 
-    const normalizedImports = Object.entries(rawData).map(([key, value]) => normalizeNoteRecord(key, value));
-    const isValid = normalizedImports.every(Boolean);
-
-    if (!isValid) {
-      const status = document.getElementById('importStatus');
-      status.textContent = 'Error: Invalid backup structure. Make sure this was exported from a HAICIS 2026 guide.';
+    const keys = Object.keys(backup.notes);
+    const starCount = (backup.starredSessions || []).length + (backup.starredSpeakers || []).length;
+    if (keys.length === 0 && starCount === 0) {
+      status.textContent = 'This backup is empty — it has no notes or stars.';
       status.className = 'confirm-status error';
       return;
     }
 
-    rawData = Object.fromEntries(normalizedImports.map(note => [note.key, note]));
-    const merge = document.getElementById('importMergeCheckbox').checked;
+    rawData = backup.notes;
+    const merge = document.querySelector('input[name="importMode"]:checked')?.value !== 'replace';
     const currentNotes = getNotes();
     let importedCount = 0;
     let updatedCount = 0;
@@ -4849,12 +5068,21 @@
           }
         }
       });
-      persistNotes(currentNotes);
+      if (!persistNotes(currentNotes)) return;
     } else {
       // Total overwrite
-      persistNotes(rawData);
+      if (!persistNotes(rawData)) return;
       importedCount = keys.length;
     }
+
+    // Stars: add them when merging; replace them when replacing (older notes-only backups leave stars alone).
+    if (backup.starredSessions) {
+      persistStarredSessions(new Set(merge ? [...getStarredSessions(), ...backup.starredSessions] : backup.starredSessions));
+    }
+    if (backup.starredSpeakers) {
+      persistStarredSpeakers(new Set(merge ? [...getStarredSpeakers(), ...backup.starredSpeakers] : backup.starredSpeakers));
+    }
+    renderStrandFilter();
 
     // Refresh UI
     renderSchedule();
@@ -4867,20 +5095,21 @@
     }
 
     closeImportModal();
-    const actionMsg = merge 
-      ? `Import complete: ${importedCount} new, ${updatedCount} updated`
-      : `Import complete: Overwrote database with ${importedCount} notes`;
-    showToast(actionMsg + ' ✓');
+    const starText = starCount ? ` · ${starCount} star${starCount !== 1 ? 's' : ''}` : '';
+    const actionMsg = merge
+      ? `Restored: ${importedCount} new, ${updatedCount} updated${starText}`
+      : `Restored ${importedCount} note${importedCount !== 1 ? 's' : ''}${starText}`;
+    showToast(actionMsg + ' ✓', 3500);
   });
 
   document.getElementById('dismissDownloadPromptBtn').addEventListener('click', () => {
-    localStorage.setItem(EXPORT_DOWNLOAD_REMINDER_KEY, '1');
+    safeSetItem(EXPORT_DOWNLOAD_REMINDER_KEY, '1');
     updateExportModalState();
     showToast('Desktop download reminder turned off');
   });
 
   document.getElementById('resetDownloadReminderBtn').addEventListener('click', () => {
-    localStorage.removeItem(EXPORT_DOWNLOAD_REMINDER_KEY);
+    safeRemoveItem(EXPORT_DOWNLOAD_REMINDER_KEY);
     updateDownloadReminderTestState();
     if (!document.getElementById('exportModal').classList.contains('hidden')) {
       updateExportModalState();
@@ -5637,7 +5866,7 @@
                       placeholder="Where did you meet? What did they say? Any follow-up?"
                       aria-label="Note about ${esc(sp.name)}"
                     >${note ? esc(note.text) : ''}</textarea>
-                    <p class="note-meta" data-note-meta-type="${NOTE_TYPES.SPEAKER}" data-note-meta-id="${sp.id}">${esc(noteMetaMessage(note))}</p>
+                    <p class="note-meta" data-note-meta-type="${NOTE_TYPES.SPEAKER}" data-note-meta-id="${sp.id}">${esc(editorMetaMessage(note))}</p>
                     <button class="note-save-btn" data-note-type="${NOTE_TYPES.SPEAKER}" data-note-id="${sp.id}">Save Person Note ✓</button>
                   </div>
                 </div>
@@ -5945,15 +6174,21 @@
     const recallBtn = document.getElementById('showNotesStorageTip');
     if (!tip || !dismissBtn || !recallBtn) return;
 
-    const isDismissed = localStorage.getItem(NOTES_STORAGE_TIP_KEY) === '1';
+    const isDismissed = safeGetItem(NOTES_STORAGE_TIP_KEY) === '1';
+    if (!storageWorks()) document.getElementById('storageBanner').hidden = false;
     tip.hidden = isDismissed;
     recallBtn.hidden = !isDismissed;
 
     dismissBtn.addEventListener('click', () => {
       tip.hidden = true;
       recallBtn.hidden = false;
-      localStorage.setItem(NOTES_STORAGE_TIP_KEY, '1');
+      try { localStorage.setItem(NOTES_STORAGE_TIP_KEY, '1'); } catch {}
     });
+
+    document.getElementById('backupStatus')?.addEventListener('click', e => {
+      if (e.target.closest('[data-open-export]')) document.getElementById('exportBtn').click();
+    });
+    updateBackupStatus();
 
     recallBtn.addEventListener('click', () => {
       tip.hidden = false;
