@@ -9,7 +9,9 @@ The 5th annual **Hawaiʻi AI & Cloud Innovation Summit**. Open the link on your 
 
 ## Make it your day
 
-- **Find your next stop.** Browse the full agenda or search by topic, speaker, track, or room. Live indicators follow Hawaiʻi Standard Time (HST, UTC−10).
+- **Land where you are.** On the event day, the guide jumps to the current point in the schedule using Hawaiʻi Standard Time (HST, ten hours behind Coordinated Universal Time). Use **Jump to now** or press **t** to return later. In a gap it finds the next session; after the agenda ends it finds closing remarks. It won’t keep scrolling while you’re reading.
+- **Find your next stop.** Search by topic, speaker, track, or room. Fuzzy search handles typos, rearranged words, and Hawaiian marks: try **petr schwart**, **data nadia**, or **hawaii**. Schedule matches stay in time order; speaker matches rank by relevance. Searches run locally.
+- **Keep the original handy.** The **Brochure** button opens the [public conference PDF](https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing).
 - **Pick your afternoon.** There are three parallel tracks: **AI Playbooks**, **Practitioner Foundations**, and **People-Powered AI**. Choose one session at 1:15 PM and another at 2:05 PM.
 - **Keep a shortlist.** Open a session and tap **Add to My Picks**. Star speakers you want to remember, too.
 - **Catch the useful bits.** Write a session note, a person note, or a quick note for that idea you don’t want to lose before lunch.
@@ -17,6 +19,24 @@ The 5th annual **Hawaiʻi AI & Cloud Innovation Summit**. Open the link on your 
 - **Share the guide.** The built-in QR (Quick Response) code opens this public page for someone else. It doesn’t share your notes.
 
 Visit once while you’re online; the guide’s schedule, speaker list, and share code are then cached for offline use. External websites still need an internet connection.
+
+## Keep your hands on the keyboard
+
+Press **?** or click the **?** button for an in-app reference.
+
+| Key | What it does |
+| --- | --- |
+| **1 / 2 / 3** | Schedule / speakers / notes |
+| **/** | Focus the current tab’s search |
+| **j / k** | Next / previous result |
+| **↓ / ↑** | Move from search into results, then between result headings |
+| **Enter / Space** | Open or close the focused item |
+| **s** | Star or unstar the focused session or speaker |
+| **n** | Start a quick note |
+| **t** | Jump to the current point in the schedule |
+| **Esc** | Close a dialog or clear the focused search |
+
+Shortcuts pause while you type in a note or search field. Tab headings also support left/right arrows and Home/End. Dialogs keep keyboard focus inside and return it when closed.
 
 ## A few things worth knowing
 
@@ -30,7 +50,7 @@ Visit once while you’re online; the guide’s schedule, speaker list, and shar
 
 The guide includes **21 agenda entries**, **six breakout sessions across three tracks**, and **28 publicly listed speakers and contributors**. Speaker cards connect to their scheduled appearances; Hannah Ishida is listed in the brochure biographies without a timed appearance, which her card explains.
 
-Content comes from the supplied **HAICIS 2026 Digital Brochure** (agenda pp. 2–3, speaker roster p. 4 and pp. 9–16, session descriptions pp. 5–8). The [organizer’s page](https://www.truehawaii.org/ai-summit/) and [Hawaiʻi Technology Development Corporation listing](https://www.htdc.org/event/hawaii-ai-cloud-innovation-summit/) confirm the venue and overall event window. Sources were checked November 5, 2026.
+Content comes from the [public HAICIS 2026 Digital Brochure](https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing) (agenda pp. 2–3, speaker roster p. 4 and pp. 9–16, session descriptions pp. 5–8). The [organizer’s page](https://www.truehawaii.org/ai-summit/) and [Hawaiʻi Technology Development Corporation listing](https://www.htdc.org/event/hawaii-ai-cloud-innovation-summit/) confirm the venue and overall event window. Sources were checked November 5, 2026.
 
 Session descriptions are concise paraphrases of the brochure. Name variants use the fuller brochure names. Peter Schwartz’s title follows the detailed keynote listing; Donavan Kealoha’s two brochure affiliations are retained.
 
@@ -39,10 +59,11 @@ Session descriptions are concise paraphrases of the brochure. Name variants use 
 It’s a small static site: **no dependencies and no build step**.
 
 - `index.html` contains the app, agenda, and speaker data.
+- `search.js` provides typo-tolerant search without a third-party service or dependency.
 - `sw.js` handles offline caching. Bump its cache version whenever you change a cached asset.
 - `share-qr.svg` is a local share code, so loading it makes no request to a third-party QR service.
 - `favicon.svg` is an original cloud-and-microchip mark inspired by the brochure’s ocean blues and cyan circuit patterns, with a small island-like silhouette in the processor core.
-- `scripts/check.mjs` checks script syntax, agenda and speaker references, parallel tracks, dates, local assets, and privacy safeguards. Run it with `npm test`.
+- `scripts/check.mjs` checks script syntax, agenda and speaker references, parallel tracks, dates, local assets, and privacy safeguards. `scripts/behavior.mjs` covers fuzzy matching, Hawaiian marks, speaker aliases, time boundaries, parallel sessions, and backup-note round trips. Run both with `npm test`.
 
 Serve the folder with any static web server to preview changes. **GitHub Pages publishes from `main`, at the repository root.** The live page is [lpcode808.github.io/HAICIS-2026](https://lpcode808.github.io/HAICIS-2026/).
 

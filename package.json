@@ -4,6 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node scripts/check.mjs"
+    "test": "node scripts/check.mjs && node scripts/behavior.mjs"
   }
 }

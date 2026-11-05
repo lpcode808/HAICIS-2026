@@ -5,6 +5,7 @@ import vm from 'node:vm';
 const html = fs.readFileSync('index.html', 'utf8');
 const js = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 new vm.Script(js);
+new vm.Script(fs.readFileSync('search.js', 'utf8'));
 new vm.Script(fs.readFileSync('sw.js', 'utf8'));
 const schedule = JSON.parse(js.match(/const SCHEDULE = (\[[\s\S]*?\n\]);/)[1]);
 const speakers = JSON.parse(js.match(/const SPEAKERS = (\[[\s\S]*?\n\])\n\s*\.map/)[1]);
@@ -35,4 +36,5 @@ for (const [, ref] of html.matchAll(/(?:src|href)="([^"#]+)"/g)) {
 const sw = fs.readFileSync('sw.js','utf8');
 assert(sw.includes("key.startsWith('haicis2026-guide-')"));
 assert(sw.includes("'./share-qr.svg'"));
+assert(sw.includes("'./search.js'"));
 console.log('PASS: script syntax; 21 agenda entries; 28 speakers; parallel tracks; references; date/time; storage isolation; privacy and local assets.');

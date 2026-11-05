@@ -2433,6 +2433,25 @@
     .strand-practitioner-foundations { color:#f6d28f; }
     .strand-people-powered-ai { color:#bbc7ff; }
     .session-trigger { scroll-margin-top:150px; }
+
+    [hidden] { display:none !important; }
+    .header-actions { display:flex; gap:.4rem; align-items:center; flex-shrink:0; }
+    .shortcuts-button { border:1px solid var(--border-active); cursor:pointer; font-size:1rem; }
+    .schedule-live-tools { display:flex; align-items:center; justify-content:space-between; gap:.75rem; margin:.8rem 1rem; }
+    .schedule-live-tools p { font-size:.75rem; color:var(--teal); line-height:1.5; }
+    .live-jump-btn { flex-shrink:0; min-height:44px; padding:.5rem .8rem; border:1px solid var(--border-active); border-radius:8px; background:var(--teal-dim); color:var(--teal); font:700 .75rem var(--font-body); cursor:pointer; }
+    .search-hint { margin:.45rem 1.25rem .6rem; color:var(--text-muted); font-size:.72rem; line-height:1.6; }
+    kbd { display:inline-block; border:1px solid var(--border-active); border-bottom-width:2px; border-radius:4px; padding:0 .32rem; font:700 .73rem monospace; color:var(--text); }
+    .shortcut-list { display:grid; grid-template-columns:auto 1fr; gap:.75rem 1rem; font-size:.85rem; line-height:1.5; }
+    .shortcut-list dt { white-space:nowrap; }
+    .shortcut-list dd { color:var(--text-muted); margin:0; }
+    .session-item, .speaker-item, .note-card { scroll-margin-top:calc(var(--header-height, 145px) + 12px); }
+    .session-item:not(.expanded) > .session-body,
+    .speaker-item:not(.expanded) > .speaker-body,
+    .note-toggle[aria-expanded="false"] + .note-body,
+    .learn-callout.collapsed .learn-callout-body { visibility:hidden; }
+    .session-trigger:focus-visible, .speaker-trigger:focus-visible, .note-card-chevron:focus-visible { outline:3px solid var(--teal); outline-offset:3px; }
+    @media(max-width:380px) { .event-subtitle { max-width:180px; } .header-inner { gap:.4rem; padding-left:.8rem; padding-right:.8rem; } }
   </style>
 </head>
 <body>
@@ -2443,19 +2462,19 @@
         <span class="conference-name">HAICIS 2026</span><span class="event-subtitle">Hawaiʻi AI &amp; Cloud Innovation Summit</span>
         <span class="conference-meta">November 5 · Honolulu · HST</span>
       </div>
-      <a href="https://www.truehawaii.org/ai-summit/" target="_blank" rel="noopener" class="header-link" title="Visit the official Hawaiʻi AI &amp; Cloud Innovation Summit site">Official Website ↗</a>
+      <div class="header-actions"><a href="https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="header-link" title="Open the public conference brochure PDF">Brochure ↗</a><button id="shortcutsBtn" class="header-link shortcuts-button" type="button" aria-haspopup="dialog" aria-controls="shortcutsModal" title="Keyboard shortcuts (?)">?</button></div>
     </div>
     <nav class="tab-nav" role="tablist" aria-label="Conference guide">
-      <button class="tab-btn active" role="tab" data-tab="schedule" aria-selected="true">Schedule</button>
-      <button class="tab-btn" role="tab" data-tab="speakers" aria-selected="false">Speakers</button>
-      <button class="tab-btn" role="tab" data-tab="notes" aria-selected="false">
+      <button class="tab-btn active" role="tab" id="tab-schedule" aria-controls="scheduleTab" tabindex="0" aria-keyshortcuts="1" data-tab="schedule" aria-selected="true">Schedule</button>
+      <button class="tab-btn" role="tab" id="tab-speakers" aria-controls="speakersTab" tabindex="-1" aria-keyshortcuts="2" data-tab="speakers" aria-selected="false">Speakers</button>
+      <button class="tab-btn" role="tab" id="tab-notes" aria-controls="notesTab" tabindex="-1" aria-keyshortcuts="3" data-tab="notes" aria-selected="false">
         Notes <span class="note-count" id="noteCount"></span>
       </button>
     </nav>
   </header>
 
   <main>
-    <section id="scheduleTab" class="tab-content active" role="tabpanel">
+    <section id="scheduleTab" class="tab-content active" role="tabpanel" aria-labelledby="tab-schedule">
       <div class="date-header">
         <span class="date-label">November 5, 2026</span>
         <span class="date-sub">Hilton Waikiki Beach Resort · Honolulu, Hawaiʻi</span>
@@ -2483,17 +2502,25 @@
           </p>
           <div class="learn-callout-links">
             <a class="learn-callout-link primary" href="https://www.truehawaii.org/ai-summit/" target="_blank" rel="noopener">Official summit site ↗</a>
+            <a class="learn-callout-link" href="https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing" target="_blank" rel="noopener noreferrer">View public brochure PDF ↗</a>
           </div>
         </div>
       </section>
-      <div class="schedule-search-wrap">
-        <input class="schedule-search" type="search" id="scheduleSearch" placeholder="Search sessions, speakers, tracks, rooms…" aria-label="Search schedule">
+      <div class="schedule-live-tools">
+        <p id="scheduleLiveStatus" aria-live="polite">All times in Hawaiʻi Standard Time</p>
+        <button type="button" id="jumpNowBtn" class="live-jump-btn">Jump to now ↓</button>
       </div>
+      <div class="schedule-search-wrap">
+        <input class="schedule-search" type="search" id="scheduleSearch" placeholder="Search sessions, speakers, tracks, rooms…" aria-label="Search schedule" aria-describedby="scheduleSearchHelp" aria-keyshortcuts="/">
+      </div>
+      <p id="scheduleSearchHelp" class="search-hint">Fuzzy search: try “petr schwart”, “hawaii”, or “data nadia”. <kbd>/</kbd> search · <kbd>?</kbd> shortcuts</p>
+      <p id="scheduleSearchStatus" class="search-hint" role="status"></p>
       <div id="strandFilter" class="strand-filter" role="toolbar" aria-label="Filter sessions by track"></div>
       <div id="scheduleList"></div>
       <footer class="app-footer">
         <a href="https://www.truehawaii.org/ai-summit/" target="_blank" rel="noopener">Official summit site</a>
-        &nbsp;·&nbsp; Independent attendee guide · Public event information
+        &nbsp;·&nbsp; <a href="https://drive.google.com/file/d/1U_589JYnYUIcB12ZcsWmJ_yZmEyEeVoW/view?usp=sharing" target="_blank" rel="noopener noreferrer">Public brochure PDF</a>
+        <br>Independent attendee guide · Public event information
         <br>
         <button class="qr-share-btn" id="openQrModal" type="button" aria-haspopup="dialog">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
@@ -2507,10 +2534,11 @@
       </footer>
     </section>
 
-    <section id="speakersTab" class="tab-content" role="tabpanel">
+    <section id="speakersTab" class="tab-content" role="tabpanel" aria-labelledby="tab-speakers">
       <div class="speakers-search-wrap">
-        <input class="speakers-search" type="search" id="speakerSearch" placeholder="Search speakers…" aria-label="Search speakers">
+        <input class="speakers-search" type="search" id="speakerSearch" placeholder="Search names, organizations, or roles…" aria-label="Search speakers" aria-describedby="speakerSearchHelp">
       </div>
+      <p id="speakerSearchHelp" class="search-hint">Typos and Hawaiian marks welcome. <kbd>↓</kbd> from search to browse results.</p>
       <div class="speakers-toolbar">
         <button class="speaker-toolbar-btn" id="showStarredFirstBtn" type="button" aria-pressed="false" disabled>⭐ Show Starred Up Top</button>
         <button class="speaker-clear-btn" id="clearSpeakerStarsBtn" type="button" aria-haspopup="dialog" disabled>Clear Stars</button>
@@ -2520,7 +2548,7 @@
       <div id="speakersList"></div>
     </section>
 
-    <section id="notesTab" class="tab-content" role="tabpanel">
+    <section id="notesTab" class="tab-content" role="tabpanel" aria-labelledby="tab-notes">
       <div class="notes-header">
         <span class="notes-title">My Notes</span>
         <div class="notes-actions">
@@ -2707,9 +2735,32 @@
     </div>
   </div>
 
+
+  <div class="modal-overlay hidden" id="shortcutsModal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle">
+    <div class="modal-sheet">
+      <div class="modal-top"><h2 class="modal-top-title" id="shortcutsTitle">Get around quickly</h2><button class="modal-close" id="closeShortcutsBtn" type="button" aria-label="Close keyboard shortcuts">✕</button></div>
+      <div class="modal-body" style="padding:1.25rem">
+        <dl class="shortcut-list">
+          <dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Schedule, speakers, notes</dd>
+          <dt><kbd>/</kbd></dt><dd>Focus search in the current tab</dd>
+          <dt><kbd>j</kbd> / <kbd>k</kbd></dt><dd>Next / previous session, speaker, or saved note</dd>
+          <dt><kbd>↓</kbd> / <kbd>↑</kbd></dt><dd>From search, jump to results; from a result heading, move between results</dd>
+          <dt><kbd>Enter</kbd> / <kbd>Space</kbd></dt><dd>Open or close the focused item</dd>
+          <dt><kbd>s</kbd></dt><dd>Star or unstar the focused session or speaker</dd>
+          <dt><kbd>n</kbd></dt><dd>Start a quick note</dd>
+          <dt><kbd>t</kbd></dt><dd>Jump to the current point in the schedule</dd>
+          <dt><kbd>?</kbd></dt><dd>Show this help</dd>
+          <dt><kbd>Esc</kbd></dt><dd>Close a dialog or clear the focused search</dd>
+        </dl>
+        <p class="search-hint" style="margin:1rem 0 0">Letter and number shortcuts pause while you’re typing. On a tab heading, use left/right arrows or Home/End to switch tabs. Notes and fuzzy searches stay in this browser.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast notification -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="search.js"></script>
   <script>
   // ──────────────────────────────────────────────────────────
   //  SCHEDULE DATA  —  HAICIS 2026, November 5 · brochure agenda
@@ -3089,17 +3140,19 @@
   }
 
   function normalizeNoteRecord(key, value) {
-    if (!value || typeof value !== 'object') return null;
+    if (typeof key !== 'string' || !value || typeof value !== 'object' || Array.isArray(value)) return null;
 
     const text = typeof value.text === 'string' ? value.text.trim() : '';
     if (!text) return null;
 
     if (value.type) {
+      if (!Object.values(NOTE_TYPES).includes(value.type)) return null;
       const entityId = value.entityId || key.split(':').slice(1).join(':') || GENERAL_NOTE_ID;
+      if (typeof entityId !== 'string' || !/^[a-zA-Z0-9_-]+$/.test(entityId)) return null;
       const createdAt = normalizeTimestamp(value.createdAt || value.savedAt);
       const updatedAt = normalizeTimestamp(value.updatedAt || value.createdAt || value.savedAt || createdAt);
       return {
-        key,
+        key: noteKey(value.type, entityId),
         type: value.type,
         entityId,
         text,
@@ -3109,6 +3162,7 @@
     }
 
     const sessionId = value.id || key;
+    if (typeof sessionId !== 'string' || !/^[a-zA-Z0-9_-]+$/.test(sessionId)) return null;
     const createdAt = normalizeTimestamp(value.savedAt);
     return {
       key: noteKey(NOTE_TYPES.SESSION, sessionId),
@@ -3387,12 +3441,7 @@
   }
 
   function normalizeSearchText(value = '') {
-    return String(value)
-      .toLowerCase()
-      .normalize('NFKD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
+    return GuideSearch.normalize(value);
   }
 
   function noteMatchesSearch(note, query) {
@@ -3403,7 +3452,7 @@
       getNoteContext(note),
       noteTypeLabel(note.type)
     ].join(' '));
-    return searchableText.includes(query);
+    return Number.isFinite(GuideSearch.score(query, searchableText));
   }
 
   function updateNotesSearchControls() {
@@ -3435,6 +3484,7 @@
 
   function normalizeSpeakerLookupName(name = '') {
     return name
+      .replace(/^(?:Introduction by|Governor)\s+/i, '')
       .replace(/^.*?:\s*/, '')
       .replace(/\s*\([^)]*\)\s*$/g, '')
       .trim();
@@ -3596,15 +3646,13 @@
     }
 
     if (q) {
-      items = items.filter(s => {
-        const matchesTitle = s.title && s.title.toLowerCase().includes(q);
-        const matchesDesc = s.description && s.description.toLowerCase().includes(q);
-        const matchesSpeaker = s.speaker && s.speaker.toLowerCase().includes(q);
-        const matchesLocation = s.location && s.location.toLowerCase().includes(q);
-        const matchesStrand = (s.strands || []).some(name => name.toLowerCase().includes(q));
-        return matchesTitle || matchesDesc || matchesSpeaker || matchesLocation || matchesStrand;
-      });
+      items = items.filter(item => Number.isFinite(GuideSearch.score(q,
+        item.title, item.description, item.speaker, item.location, item.strands || [],
+        SPEAKERS.filter(speaker => speaker.sessions.includes(item.id))
+          .flatMap(speaker => [speaker.company, speaker.role, ...(speaker.aliases || [])]))));
     }
+    document.getElementById('scheduleSearchStatus').textContent =
+      `${items.length} of ${SCHEDULE.length} agenda entries${q ? ' match your search' : ' shown'}.`;
 
     if (!items.length) {
       const msg = currentStrandFilter === 'starred'
@@ -3940,6 +3988,7 @@
       body.style.maxHeight = body.scrollHeight + 'px';
       btn.setAttribute('aria-expanded', 'true');
       setTimeout(() => {
+        if (btn.getAttribute('aria-expanded') !== 'true') return;
         body.style.maxHeight = '9999px';
         const ta = body.querySelector('.note-textarea');
         if (ta) ta.focus();
@@ -4008,6 +4057,7 @@
     const totalSavedNotes = quickNotes.length + linkedNotes.length;
     const totalMatches = filteredQuickNotes.length + filteredLinkedNotes.length;
     const composer = document.getElementById('notesComposer');
+    const quickDraft = document.getElementById('quickNoteCompose')?.value || '';
     const container = document.getElementById('notesList');
     const status = document.getElementById('notesSearchStatus');
 
@@ -4035,7 +4085,7 @@
           status.textContent = `Showing ${totalMatches} of ${totalSavedNotes} saved notes for "${queryLabel}".`;
         }
       } else if (totalSavedNotes > 0) {
-        status.textContent = 'Search across your quick, session, and speaker notes.';
+        status.textContent = 'Fuzzy search across your quick, session, and speaker notes.';
       } else {
         status.textContent = '';
       }
@@ -4090,6 +4140,8 @@
       }).join('')}
     `;
 
+    document.getElementById('quickNoteCompose').value = quickDraft;
+
     // Bind save-on-blur and save buttons for existing quick note stickies
     bindNoteEditors(composer);
     syncNoteMeta();
@@ -4107,6 +4159,7 @@
       }
       const newId = `quick-note-${Date.now()}`;
       saveNote(NOTE_TYPES.GENERAL, newId, text);
+      textarea.value = '';
       showToast('Quick note added ✓');
       renderNotesTab();
     });
@@ -4219,13 +4272,15 @@
   function buildExportText() {
     const notes = getNotes();
     const noteList = Object.values(notes).sort((a, b) => a.createdAt - b.createdAt);
-    if (noteList.length === 0) return 'No notes saved yet.';
+    const picks = getStarredSessionList();
+    if (noteList.length === 0 && picks.length === 0) return 'No notes or starred sessions yet.';
 
     const lines = [
       'HAICIS 2026 — MY NOTES',
       'November 5, 2026 · Hilton Waikiki Beach Resort, Honolulu',
       '─'.repeat(42),
       '',
+      ...(picks.length ? ['MY PICKS', ...picks.map(item => `${item.time} — ${item.title} · ${item.location}`), ''] : []),
       ...noteList.flatMap(n => [
         noteTypeLabel(n.type).toUpperCase(),
         getNoteTitle(n),
@@ -4309,7 +4364,7 @@
   }
 
   function downloadExportMarkdown() {
-    if (getNoteCount() === 0) return null;
+    if (getNoteCount() === 0 && getStarredSessions().size === 0) return null;
 
     const blob = new Blob([buildExportMarkdown()], { type: 'text/markdown;charset=utf-8' });
     const objectUrl = URL.createObjectURL(blob);
@@ -4418,6 +4473,7 @@
       const isActive = btn.dataset.tab === target;
       btn.classList.toggle('active', isActive);
       btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      btn.tabIndex = isActive ? 0 : -1;
     });
 
     document.querySelectorAll('.tab-content').forEach(panel => {
@@ -4443,12 +4499,23 @@
 
   function openModal(modalId) {
     const modal = document.getElementById(modalId);
-    if (modal) modal.classList.remove('hidden');
+    if (!modal) return;
+    modalReturnFocus.set(modalId, document.activeElement);
+    modal.classList.remove('hidden');
+    document.querySelectorAll('body > header, body > main').forEach(el => { el.inert = true; });
+    requestAnimationFrame(() => modal.querySelector('button, input, textarea, a[href]')?.focus());
   }
 
   function closeModal(modalId) {
     const modal = document.getElementById(modalId);
-    if (modal) modal.classList.add('hidden');
+    if (!modal || modal.classList.contains('hidden')) return;
+    modal.classList.add('hidden');
+    if (!document.querySelector('.modal-overlay:not(.hidden)')) {
+      document.querySelectorAll('body > header, body > main').forEach(el => { el.inert = false; });
+    }
+    const previous = modalReturnFocus.get(modalId);
+    if (previous?.isConnected) previous.focus({ preventScroll: true });
+    modalReturnFocus.delete(modalId);
   }
 
   // ──────────────────────────────────────────────────────────
@@ -4461,17 +4528,18 @@
     const reminderPrompt = document.getElementById('desktopDownloadPrompt');
     const exportHint = document.getElementById('exportHint');
     const hasNotes = getNoteCount() > 0;
+    const hasContent = hasNotes || getStarredSessions().size > 0;
     const isDesktop = isLikelyDesktopDevice();
     const supportsShare = typeof navigator.share === 'function' && !isDesktop;
 
     shareBtn.hidden = isDesktop;
-    shareBtn.disabled = !supportsShare || !hasNotes;
+    shareBtn.disabled = !supportsShare || !hasContent;
     shareBtn.textContent = supportsShare ? 'Send to Notes…' : 'Send to Notes unavailable here';
 
-    downloadBtn.hidden = !isDesktop;
-    downloadBtn.disabled = !hasNotes;
+    downloadBtn.hidden = false;
+    downloadBtn.disabled = !hasContent;
 
-    downloadJsonBtn.hidden = !isDesktop;
+    downloadJsonBtn.hidden = false;
     downloadJsonBtn.disabled = !hasNotes;
 
     reminderPrompt.hidden = !(isDesktop && hasNotes && shouldShowDesktopDownloadPrompt());
@@ -4479,7 +4547,7 @@
       ? 'On desktop, use <strong>Download .md Backup</strong> or <strong>Download JSON (JavaScript Object Notation) Backup</strong> to keep a local copy of these notes outside this browser. You can still copy and paste if you prefer.'
       : supportsShare
         ? 'On iPhone, tap <strong>Send to Notes…</strong> to open the share sheet, then choose <strong>Notes</strong> or <strong>New Quick Note</strong>. If you prefer, copy and paste manually.'
-        : 'This browser cannot open the native iPhone share sheet from here, so use <strong>Copy to Clipboard</strong> and paste into Notes manually.';
+        : 'Download a backup below, or use <strong>Copy to Clipboard</strong> and paste into your notes app.';
 
     updateDownloadReminderTestState();
   }
@@ -4650,10 +4718,8 @@
       return;
     }
 
-    const isValid = keys.every(k => {
-      const item = rawData[k];
-      return item && typeof item === 'object' && ('id' in item) && ('text' in item) && ('type' in item);
-    });
+    const normalizedImports = Object.entries(rawData).map(([key, value]) => normalizeNoteRecord(key, value));
+    const isValid = normalizedImports.every(Boolean);
 
     if (!isValid) {
       const status = document.getElementById('importStatus');
@@ -4662,6 +4728,7 @@
       return;
     }
 
+    rawData = Object.fromEntries(normalizedImports.map(note => [note.key, note]));
     const merge = document.getElementById('importMergeCheckbox').checked;
     const currentNotes = getNotes();
     let importedCount = 0;
@@ -4669,7 +4736,7 @@
 
     if (merge) {
       // Smart merge: resolve conflicts based on updatedAt timestamps
-      keys.forEach(k => {
+      Object.keys(rawData).forEach(k => {
         const imported = rawData[k];
         const existing = currentNotes[k];
         if (!existing) {
@@ -4735,7 +4802,7 @@
 
   document.getElementById('shareBtn').addEventListener('click', async () => {
     const text = document.getElementById('exportTextarea').value;
-    if (text === 'No notes saved yet.') {
+    if (getNoteCount() === 0 && getStarredSessions().size === 0) {
       showToast('No notes to export yet');
       return;
     }
@@ -4932,6 +4999,7 @@
   },
   {
     "name": "William Kumagai",
+    "aliases": ["Bill Kumagai"],
     "role": "Interim Executive Director",
     "company": "Transform Hawaiʻi Government",
     "sessions": [
@@ -4981,7 +5049,7 @@
   {
     "name": "Ailin John",
     "role": "Senior Manager, Information Technology Enterprise Enablement Services",
-    "company": "Hawaiʻi Medical Service Association",
+    "company": "Hawaiʻi Medical Service Association (HMSA)",
     "sessions": [
       "local-companies"
     ]
@@ -5136,6 +5204,10 @@
   }
 
   function openSessionContext(sessionId, { focusNote = false } = {}) {
+    currentStrandFilter = 'all';
+    document.getElementById('scheduleSearch').value = '';
+    renderStrandFilter();
+    renderSchedule();
     activateTab('schedule');
 
     setTimeout(() => {
@@ -5154,7 +5226,8 @@
         }
       }
 
-      item.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+      if (!focusNote) trigger?.focus({ preventScroll: true });
+      item.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
     }, 80);
   }
 
@@ -5179,7 +5252,8 @@
         }
       }
 
-      item.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+      if (!focusNote) trigger?.focus({ preventScroll: true });
+      item.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
     }, 80);
   }
 
@@ -5201,8 +5275,9 @@
     const notes = getNotes();
     const starred = getStarredSpeakers();
     const q = filter.toLowerCase().trim();
+    const score = speaker => GuideSearch.score(q, speaker.name, speaker.company, speaker.role, speaker.aliases || []);
     const filteredList = q
-      ? SPEAKERS.filter(s => s.name.toLowerCase().includes(q) || s.company.toLowerCase().includes(q) || s.role.toLowerCase().includes(q))
+      ? SPEAKERS.filter(speaker => Number.isFinite(score(speaker))).sort((a, b) => score(a) - score(b))
       : SPEAKERS;
     updateSpeakerStarControls(starred.size);
     const list = speakersShowStarredFirst
@@ -5325,9 +5400,13 @@
     document.querySelectorAll('[data-speaker-star-id]').forEach(btn => {
       btn.addEventListener('click', () => {
         const speakerId = btn.dataset.speakerStarId;
+        const wasOpen = document.getElementById('spk-' + speakerId)?.classList.contains('expanded');
         const isStarred = toggleSpeakerStar(speakerId);
         showToast(isStarred ? 'Speaker starred' : 'Speaker unstarred');
         renderSpeakers(getSpeakerSearchValue());
+        const updated = document.getElementById('spk-' + speakerId);
+        if (wasOpen) updated?.querySelector('.speaker-trigger').click();
+        updated?.querySelector('[data-speaker-star-id]').focus({ preventScroll: true });
       });
     });
 
@@ -5506,49 +5585,22 @@
   }
 
   function updateYouAreHere() {
-    const now = Date.now();
-    const currentIds = [];
-    let nextId = null;
-
-    // Clear existing indicators first so stale badges disappear outside the live conference window.
     document.querySelectorAll('.session-item').forEach(el => {
       el.classList.remove('status-current', 'status-upcoming');
       el.querySelectorAll('.status-now-badge, .status-upcoming-badge').forEach(b => b.remove());
     });
-
-    if (!isConferenceDayInHawaii(new Date(now))) {
-      return;
-    }
-
-    for (const s of SCHEDULE) {
-      if (s.type === 'background') continue;
-      const start = parseSessionMs(s.time, s.date);
-      const end = s.timeEnd ? parseSessionMs(s.timeEnd, s.date) : null;
-      if (!start) continue;
-
-      if (end && now >= start && now < end) {
-        currentIds.push(s.id);
-      } else if (start > now && !nextId) {
-        nextId = s.id;
-      }
-    }
-
-    if (currentIds.length > 0) {
-      currentIds.forEach(id => {
-        const item = document.getElementById('item-' + id);
-        if (!item) return;
-        item.classList.add('status-current');
-        const timeEl = item.querySelector('.session-time');
-        if (timeEl) timeEl.insertAdjacentHTML('beforeend', '<span class="status-now-badge">Now</span>');
-      });
-    } else if (nextId) {
-      const item = document.getElementById('item-' + nextId);
-      if (item) {
-        item.classList.add('status-upcoming');
-        const timeEl = item.querySelector('.session-time');
-        if (timeEl) timeEl.insertAdjacentHTML('beforeend', '<span class="status-upcoming-badge">Up Next</span>');
-      }
-    }
+    if (!isConferenceDayInHawaii()) return;
+    const moment = getScheduleMoment();
+    if (moment.state === 'ended') return;
+    moment.sessions.forEach(session => {
+      const item = document.getElementById('item-' + session.id);
+      if (!item) return;
+      const current = moment.state === 'current';
+      item.classList.add(current ? 'status-current' : 'status-upcoming');
+      item.querySelector('.session-time')?.insertAdjacentHTML('beforeend', current
+        ? '<span class="status-now-badge">Now</span>'
+        : '<span class="status-upcoming-badge">Up Next</span>');
+    });
   }
 
   // ──────────────────────────────────────────────────────────
@@ -5565,7 +5617,7 @@
     if (!learnCallout || !learnCalloutToggle) return;
     learnCallout.classList.toggle('collapsed', collapsed);
     learnCalloutToggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-    learnCalloutToggle.setAttribute('aria-label', collapsed ? 'Expand code guide panel' : 'Collapse code guide panel');
+    learnCalloutToggle.setAttribute('aria-label', collapsed ? 'Expand event details' : 'Collapse event details');
   }
 
   function stopLearnCalloutAutoCollapse() {
@@ -5628,6 +5680,157 @@
     });
   }
 
+  // Keyboard navigation stays local and never intercepts normal text entry.
+  const modalReturnFocus = new Map();
+
+  function activeGuideTab() {
+    return document.querySelector('.tab-btn.active')?.dataset.tab || 'schedule';
+  }
+
+  function activeSearchInput() {
+    return document.getElementById({ schedule: 'scheduleSearch', speakers: 'speakerSearch', notes: 'notesSearch' }[activeGuideTab()]);
+  }
+
+  function resultHeadings() {
+    const selectors = {
+      schedule: '#scheduleList .session-trigger',
+      speakers: '#speakersList .speaker-trigger',
+      notes: '#notesComposer .note-card-chevron, #notesList .note-card-chevron'
+    };
+    return [...document.querySelectorAll(selectors[activeGuideTab()])];
+  }
+
+  function focusResult(direction) {
+    const headings = resultHeadings();
+    if (!headings.length) { showToast('No matching items to browse'); return; }
+    const card = document.activeElement?.closest('.session-item, .speaker-item, .note-card');
+    const current = headings.findIndex(heading => heading === document.activeElement || card?.contains(heading));
+    const next = current < 0 ? (direction > 0 ? 0 : headings.length - 1)
+      : Math.max(0, Math.min(headings.length - 1, current + direction));
+    headings[next].focus({ preventScroll: true });
+    headings[next].scrollIntoView({ block: 'center', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+  }
+
+  function closeActiveModal(modal) {
+    if (modal.id === 'importModal') closeImportModal();
+    else if (modal.id === 'clearNotesModal') closeClearNotesModal();
+    else if (modal.id === 'clearSpeakerStarsModal') closeClearSpeakerStarsModal();
+    else closeModal(modal.id);
+  }
+
+  function initKeyboardNavigation() {
+    document.getElementById('shortcutsBtn').addEventListener('click', () => openModal('shortcutsModal'));
+    document.getElementById('closeShortcutsBtn').addEventListener('click', () => closeModal('shortcutsModal'));
+    document.getElementById('shortcutsModal').addEventListener('click', event => {
+      if (event.target.id === 'shortcutsModal') closeModal('shortcutsModal');
+    });
+    document.getElementById('jumpNowBtn').addEventListener('click', () => jumpToNow());
+    const header = document.querySelector('.app-header');
+    const measureHeader = () => document.documentElement.style.setProperty('--header-height', `${header.getBoundingClientRect().height}px`);
+    measureHeader();
+    if ('ResizeObserver' in window) new ResizeObserver(measureHeader).observe(header);
+    else window.addEventListener('resize', measureHeader);
+
+    document.addEventListener('keydown', event => {
+      if (event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey || event.altKey) return;
+      const modal = document.querySelector('.modal-overlay:not(.hidden)');
+      if (modal) {
+        if (event.key === 'Escape') { event.preventDefault(); closeActiveModal(modal); }
+        else if (event.key === 'Tab') {
+          const controls = [...modal.querySelectorAll('button, a[href], input, textarea, select, [tabindex="0"]')]
+            .filter(el => !el.disabled && el.getClientRects().length);
+          const first = controls[0], last = controls[controls.length - 1];
+          if (event.shiftKey && (document.activeElement === first || !modal.contains(document.activeElement))) {
+            event.preventDefault(); last?.focus();
+          } else if (!event.shiftKey && (document.activeElement === last || !modal.contains(document.activeElement))) {
+            event.preventDefault(); first?.focus();
+          }
+        }
+        return;
+      }
+      const input = activeSearchInput();
+      const isSearch = event.target === input;
+      if (isSearch && event.key === 'Escape') {
+        event.preventDefault();
+        if (input.value) { input.value = ''; input.dispatchEvent(new Event('input', { bubbles: true })); }
+        else input.blur();
+        return;
+      }
+      if (isSearch && ['ArrowDown', 'ArrowUp'].includes(event.key)) {
+        event.preventDefault(); focusResult(event.key === 'ArrowDown' ? 1 : -1); return;
+      }
+      if (event.target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"]')) return;
+      const tab = event.target.closest('.tab-btn');
+      if (tab && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+        event.preventDefault();
+        const tabs = [...document.querySelectorAll('.tab-btn')];
+        const index = tabs.indexOf(tab);
+        const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1
+          : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+        activateTab(tabs[next].dataset.tab); tabs[next].focus(); return;
+      }
+      const key = event.key.toLowerCase();
+      if (['1', '2', '3'].includes(key)) {
+        event.preventDefault();
+        const target = ['schedule', 'speakers', 'notes'][Number(key) - 1];
+        activateTab(target); document.getElementById('tab-' + target).focus();
+      } else if (key === '/') {
+        event.preventDefault(); input.focus(); input.select();
+      } else if (key === '?') {
+        event.preventDefault(); openModal('shortcutsModal');
+      } else if (key === 'j' || key === 'k' || (['ArrowDown', 'ArrowUp'].includes(event.key) && resultHeadings().includes(event.target))) {
+        event.preventDefault(); focusResult(key === 'j' || event.key === 'ArrowDown' ? 1 : -1);
+      } else if (key === 'n') {
+        event.preventDefault(); activateTab('notes'); document.getElementById('quickNoteCompose').focus();
+      } else if (key === 't') {
+        event.preventDefault(); jumpToNow();
+      } else if (key === 's') {
+        const card = document.activeElement.closest('.session-item, .speaker-item');
+        const star = card?.querySelector('.session-star-toggle, .speaker-star-toggle');
+        if (star) {
+          event.preventDefault();
+          const cardId = card.id;
+          star.click();
+          document.getElementById(cardId)?.querySelector('.session-trigger, .speaker-trigger')?.focus({ preventScroll: true });
+        }
+      }
+    });
+  }
+
+  function getScheduleMoment(now = Date.now()) {
+    const timed = SCHEDULE.map(session => ({ session, start: parseSessionMs(session.time, session.date), end: parseSessionMs(session.timeEnd, session.date) }));
+    const current = timed.filter(item => now >= item.start && now < item.end);
+    if (current.length) return { state: 'current', sessions: current.map(item => item.session) };
+    const next = timed.find(item => item.start > now);
+    if (next) return { state: 'upcoming', sessions: timed.filter(item => item.start === next.start).map(item => item.session) };
+    return { state: 'ended', sessions: [SCHEDULE[SCHEDULE.length - 1]] };
+  }
+
+  function updateLiveScheduleStatus() {
+    const moment = getScheduleMoment();
+    const onDay = isConferenceDayInHawaii();
+    const text = moment.sessions.length > 1 ? `${moment.sessions.length} parallel breakout sessions` : moment.sessions[0].title;
+    document.getElementById('scheduleLiveStatus').textContent = onDay
+      ? moment.state === 'ended' ? 'The published agenda has ended.' : `${moment.state === 'current' ? 'Now' : 'Next'}: ${text}`
+      : 'November 5, 2026 · All times in Hawaiʻi Standard Time';
+    document.getElementById('jumpNowBtn').textContent = moment.state === 'ended' ? 'Jump to closing ↓'
+      : onDay ? 'Jump to now ↓' : 'Start of schedule ↓';
+  }
+
+  function jumpToNow({ automatic = false } = {}) {
+    const moment = getScheduleMoment();
+    currentStrandFilter = 'all';
+    document.getElementById('scheduleSearch').value = '';
+    renderStrandFilter(); renderSchedule(); activateTab('schedule');
+    requestAnimationFrame(() => {
+      const item = document.getElementById('item-' + moment.sessions[0].id);
+      if (!item) return;
+      if (!automatic) item.querySelector('.session-trigger').focus({ preventScroll: true });
+      item.scrollIntoView({ block: 'start', behavior: automatic || prefersReducedMotion() ? 'auto' : 'smooth' });
+      if (!automatic && moment.state === 'ended') showToast('The agenda has ended; here are the closing remarks.');
+    });
+  }
+
   // ──────────────────────────────────────────────────────────
   //  INIT
   // ──────────────────────────────────────────────────────────
@@ -5639,6 +5842,13 @@
   startLearnCalloutAutoCollapse();
   updateYouAreHere();
   setInterval(updateYouAreHere, 60000);
+
+  initKeyboardNavigation();
+  updateLiveScheduleStatus();
+  setInterval(updateLiveScheduleStatus, 60000);
+  if (isConferenceDayInHawaii() && !location.hash) {
+    requestAnimationFrame(() => jumpToNow({ automatic: true }));
+  }
 
   // Register service worker for offline support at the venue
   if ('serviceWorker' in navigator) {
